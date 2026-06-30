@@ -24,6 +24,14 @@ namespace StockGame.Scripts.Scenes
 
     public sealed class MainSceneController : SceneBaseController<MainSceneView>
     {
+        public MainSceneController()
+        {
+        }
+
+        public MainSceneController(string bgmPath = "") : base(bgmPath)
+        {
+        }
+
         public override UniTask Enter(CancellationToken token)
         {
             return base.Enter(token);
@@ -35,9 +43,12 @@ namespace StockGame.Scripts.Scenes
             var zones = View.MapObject.GetComponentsInChildren<Zone>();
             ZoneManager.Instance.RegistAll(zones);
 
+            var bgmExecutors = View.MapObject.GetComponentsInChildren<BGMExecutor>();
+            ZoneManager.Instance.RegistAllBgmExecutors(bgmExecutors);
+
             // UI 초기화 — Stock 구독이 먼저 시작되어야 Add 이벤트 정상 수신
             View.MainUI.Initilaize(0, Define.GameDefine.UIDefine.UILayer.SceneUI);
-            View.RoundReport.Initilaize(50, Define.GameDefine.UIDefine.UILayer.Popup);
+            View.RoundReport.Initilaize(49, Define.GameDefine.UIDefine.UILayer.Popup);
 
             // 미션 오브젝트 등록
             MissionManager.Instance?.Initialize(View.MissionObjects);
@@ -46,6 +57,7 @@ namespace StockGame.Scripts.Scenes
 
         public override UniTask Exit(CancellationToken token)
         {
+            ZoneManager.Instance?.ClearAll();
             return base.Exit(token);
         }
     }

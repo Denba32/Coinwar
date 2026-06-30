@@ -30,16 +30,14 @@ namespace StockGame.Scripts.Sounds
 
         private void PlayButtonSE(Unit _)
         {
-            string fileName = isPositive ? "SFX220" : "SFX221";
-            string path = $"SFX/{fileName}";
-            Managers.Sound.PlaySound(path, Define.SoundType.SFX, Define.SoundEffectType.UI);
+            string _path = isPositive ? Define.GameDefine.ResourceDefine.FMODEvent.SFX250 : Define.GameDefine.ResourceDefine.FMODEvent.SFX251;
+            Managers.Sound.PlaySfx(_path);
         }
 
         private void PlayButtonSE(BaseEventData eventData)
         {
-            string fileName = isPositive ? "SFX220" : "SFX221";
-            string path = $"SFX/{fileName}";
-            Managers.Sound.PlaySound(path, Define.SoundType.SFX, Define.SoundEffectType.UI);
+            string _path = isPositive ? Define.GameDefine.ResourceDefine.FMODEvent.SFX250 : Define.GameDefine.ResourceDefine.FMODEvent.SFX251;
+            Managers.Sound.PlaySfx(_path);
         }
     }
 }

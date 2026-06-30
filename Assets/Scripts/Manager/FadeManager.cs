@@ -2,7 +2,6 @@ using Cysharp.Threading.Tasks;
 using Denba.Common;
 using DG.Tweening;
 using StockGame.Scripts.UI;
-using System;
 using System.Threading;
 using UnityEngine;
 public class FadeManager : MonoSingleton<FadeManager>

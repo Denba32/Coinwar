@@ -4,7 +4,7 @@ using StockGame.Common.Interfaces;
 using StockGame.Scripts.Define;
 using StockGame.Scripts.Scenes;
 using StockGame.Scripts.UI;
-using StockGame.Utility;
+using StockGame.Scripts.Utility;
 using System;
 using System.Threading;
 using UniRx;
@@ -36,6 +36,11 @@ namespace StockGame.Scripts.Manager
             base.OnNetworkSpawn();
             Debug.Log($"[NetworkSceneManager] OnNetworkSpawn");
 
+            // [FIX] 싱글톤은 DontDestroyOnLoad라 방을 재생성할 때마다 OnNetworkSpawn이 다시 호출된다.
+            // 구독을 먼저 해제한 뒤 다시 등록해, 세션이 거듭될수록 콜백이 중복 누적되어
+            // 씬 로드/세션 시작 처리(OnSceneLoaded, OnServerStarted 등)가 여러 번 실행되는 것을 방지한다.
+            UnsubscribeSessionEvents();
+
             NetworkManager.OnClientConnectedCallback += OnClientConnected;
             NetworkManager.OnServerStarted += OnServerStarted;
 
@@ -46,6 +51,26 @@ namespace StockGame.Scripts.Manager
             if (IsServer) return;
             var spawnToken = Managers.Token.GetToken(this, nameof(HandleCurrentScene));
             HandleCurrentScene(spawnToken).Forget();
+        }
+
+        public override void OnNetworkDespawn()
+        {
+            base.OnNetworkDespawn();
+            // [FIX] 세션 종료(방 나가기/파괴) 시 반드시 구독을 해제하여 다음 세션에서의 중복 누적을 막는다.
+            UnsubscribeSessionEvents();
+        }
+
+        // OnNetworkSpawn에서 등록한 콜백들을 정확히 일치하게 해제한다.
+        private void UnsubscribeSessionEvents()
+        {
+            if (NetworkManager != null)
+            {
+                NetworkManager.OnClientConnectedCallback -= OnClientConnected;
+                NetworkManager.OnServerStarted -= OnServerStarted;
+                NetworkManager.OnServerStopped -= OnNetworkingSessionEnded;
+                NetworkManager.OnClientStopped -= OnNetworkingSessionEnded;
+            }
+            SceneManager.sceneLoaded -= OnSceneLoaded;
         }
 
         public override async UniTask Initialize()
@@ -350,20 +375,24 @@ namespace StockGame.Scripts.Manager
             }
         }
 
+        public void NotifyNetworkSessionEnding()
+        {
+            if (m_IsInitialized)
+            {
+                if (IsNetworkSceneManagementEnabled)
+                {
+                    m_IsNetworkSceneActive = false;
+                    NetworkManager.SceneManager.OnSceneEvent -= OnSceneEvent;
+                }
+                m_IsInitialized = false;
+            }
+        }
+
+
         public override void OnDestroy()
         {
             Managers.Token.CancelAll(this);
-
-            SceneManager.sceneLoaded -= OnSceneLoaded;
-
-            if (NetworkManager != null)
-            {
-                NetworkManager.OnServerStarted -= OnNetworkingSessionStarted;
-                NetworkManager.OnClientStarted -= OnNetworkingSessionStarted;
-                NetworkManager.OnServerStopped -= OnNetworkingSessionEnded;
-                NetworkManager.OnClientStopped -= OnNetworkingSessionEnded;
-            }
-
+            UnsubscribeSessionEvents();
             base.OnDestroy();
         }
     }

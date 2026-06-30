@@ -2,7 +2,7 @@
 using Denba.Common;
 using StockGame.Scripts.Define;
 using StockGame.Scripts.Missions;
-using StockGame.Utility;
+using StockGame.Scripts.Utility;
 using System.Collections.Generic;
 using System.Linq;
 using UniRx;
@@ -20,7 +20,7 @@ namespace StockGame.Scripts.Manager
 
         #region MISSION_DATA
         Dictionary<int, Mission> missions;
-        Dictionary<JobDefine.JobType, List<Mission>> jobMissions;
+        Dictionary<JobType, List<Mission>> jobMissions;
         Dictionary<int, List<MissionObject>> objects = new();
         #endregion MISSION_DATA
 
@@ -77,7 +77,30 @@ namespace StockGame.Scripts.Manager
             RegisterAll(missionObjects);
         }
 
+        public override void OnNetworkSpawn()
+        {
+            base.OnNetworkSpawn();
+            if (!IsServer) return;
 
+            _resolverGroup?.Dispose();
+            _resolverGroup = null;
+
+            _disposables?.Dispose();
+            _disposables = new();
+
+            currentLocalNormalMissions?.Clear();
+            currentLocalJobMissions?.Clear();
+
+            objects?.Clear();
+            disposables?.Dispose();
+            disposables = new();
+        }
+
+
+        /// <summary>
+        /// 서버 → 특정 클라이언트에게 직접 JobType 전달 후 미션 배정
+        /// joinInfos 동기화 타이밍 문제 없이 즉시 실행 가능
+        /// </summary>
         [Rpc(SendTo.SpecifiedInParams)]
         public void RequestMissionRpc(JobDefine.JobType jobType, RpcParams rpcParams = default)
         {
@@ -96,6 +119,7 @@ namespace StockGame.Scripts.Manager
             currentLocalNormalMissions?.Clear();
             currentLocalJobMissions?.Clear();
 
+            // ── 일반 미션 5개 랜덤 배정
             var missionList = missions.Values.ToList();
             missionList.Shuffle();
             Queue<Mission> missionQueue = new(missionList);
@@ -106,12 +130,12 @@ namespace StockGame.Scripts.Manager
                 mission.ResetMission();
                 mission.OnCompleted.Subscribe(completedMission =>
                 {
-                    var coin = Managers.Game.GetLocalPlayerInfo().Coin;
-                    GameManager.Instance.UpdateCoinServerRpc(coin + completedMission.Reward);
+                    GameManager.Instance.AddCoinRpc(completedMission.Reward);
                 }).AddTo(_disposables);
                 currentLocalNormalMissions?.Add(mission);
             }
 
+            // ── 직업 미션 1개 랜덤 배정 — 파라미터로 받은 jobType 사용
             if (!jobMissions.TryGetValue(jobType, out var jobMissionPool))
             {
                 Debug.LogError($"[MissionManager] jobType '{jobType}'에 해당하는 미션 풀이 없습니다.");
@@ -126,9 +150,7 @@ namespace StockGame.Scripts.Manager
             selectedJobMission.ResetMission();
             selectedJobMission.OnCompleted.Subscribe(completedMission =>
             {
-                var coin = Managers.Game.GetLocalPlayerInfo().Coin;
-                Debug.Log($"완료 코인 수 : {coin}");
-                GameManager.Instance.UpdateCoinServerRpc(coin + completedMission.Reward);
+                GameManager.Instance.AddCoinRpc(selectedJobMission.Reward);
             }).AddTo(_disposables);
 
             if (selectedJobMission.Condition.MissionFilterType == MissionFilterType.MissionZone)
@@ -161,12 +183,25 @@ namespace StockGame.Scripts.Manager
             }
             list?.Add(missionObject);
 
-            if (!missions.TryGetValue(missionObject.MissionId, out var mission)) return;
-            if (mission.OnCompleted != null)
-                disposables.Add(mission.OnCompleted.Subscribe(missionObject.Complete));
+            if (missionObject.MissionType == MissionType.Job)
+            {
+                if (!jobMissions.TryGetValue(missionObject.JobType, out var jobMission)) return;
+                foreach (var job in jobMission)
+                {
+                    disposables.Add(job.OnCompleted.Subscribe(missionObject.Complete));
+                    disposables.Add(job.OnReset.Subscribe(missionObject.ResetMission));
+                }
+            }
+            else
+            {
+                if (!missions.TryGetValue(missionObject.MissionId, out var mission)) return;
+                if (mission.OnCompleted != null)
+                    disposables.Add(mission.OnCompleted.Subscribe(missionObject.Complete));
 
-            if (mission.OnReset != null)
-                disposables.Add(mission.OnReset.Subscribe(missionObject.ResetMission));
+                if (mission.OnReset != null)
+                    disposables.Add(mission.OnReset.Subscribe(missionObject.ResetMission));
+            }
+
         }
 
         public void UnRegister(MissionObject missionObject)
@@ -202,7 +237,11 @@ namespace StockGame.Scripts.Manager
             {
                 if (objList == null || objList.Count <= 0) break;
                 foreach (var obj in objList)
-                    obj.Lock(true);
+                {
+                    obj?.Lock(true);
+                    obj?.SetHighlight(false);
+                    obj?.SetInteract(false);
+                }
             }
 
             foreach (var normal in currentLocalNormalMissions)
@@ -236,7 +275,7 @@ namespace StockGame.Scripts.Manager
 
         public Mission GetJobMission(JobType jobType, int missionId)
         {
-            if(!jobMissions.TryGetValue(jobType, out var missionList))
+            if (!jobMissions.TryGetValue(jobType, out var missionList))
             {
                 Debug.Log($"{missionId}에 대한 미션 데이터를 찾을 수 없습니다");
                 return null;

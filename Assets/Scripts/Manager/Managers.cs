@@ -1,9 +1,7 @@
 using Cysharp.Threading.Tasks;
 using Denba.Common;
 using StockGame.Scripts.Datas;
-using StockGame.Utility;
 using System;
-using System.IO;
 using System.Threading;
 using UnityEngine;
 
@@ -11,6 +9,7 @@ namespace StockGame.Scripts.Manager
 {
     public class Managers : MonoSingleton<Managers>
     {
+        private bool isDisposed = false;
         #region Default System
         public static InputManager Input => InputManager.Instance;
         public static UIManager UI => UIManager.Instance;
@@ -31,15 +30,12 @@ namespace StockGame.Scripts.Manager
         public static StockManager Stock => StockManager.Instance;
         public static LobbyManager Lobby => LobbyManager.Instance;
         public static SpawnManager Spawn => SpawnManager.Instance;
+        public static ConfigManager Config => ConfigManager.Instance;
         #endregion Game System
 
-        #region Config
-        private static ConfigData configData;
-        public static ConfigData ConfigData => configData;
 
         [SerializeField] private ResourcePathConfigSO resourcePath;
         public ResourcePathConfigSO ResourcePath => resourcePath;
-        #endregion Config
 
         protected override void Awake()
         {
@@ -56,7 +52,7 @@ namespace StockGame.Scripts.Manager
 
         private async UniTask InitAsync(CancellationToken token)
         {
-            if(token.IsCancellationRequested) return;
+            if (token.IsCancellationRequested) return;
             Application.targetFrameRate = 60;
             try
             {
@@ -69,7 +65,6 @@ namespace StockGame.Scripts.Manager
 
                 await Resource.InitAsync(token);
                 Master.Initialize();
-                LoadConfig();
 
                 UI.Initialize();
                 Sound.Initialize();
@@ -78,13 +73,15 @@ namespace StockGame.Scripts.Manager
                 Input.Initialize();
                 Camera.Initialize();
 
+                Config.Initialize();
+
                 await Game.Initialize();
                 await Job.Initialize();
                 await Mission.Initialize();
                 await Stock.Initialize();
                 await Lobby.Initialize();
                 await Spawn.Initialize();
-                
+
                 await NetworkScene.Initialize();
             }
             catch (Exception e)
@@ -105,33 +102,17 @@ namespace StockGame.Scripts.Manager
 
         void OnApplicationQuit()
         {
-            if (configData != null)
-                SaveConfig();
+            Dispose();
         }
 
-        void OnDestroy()
+        public override void Dispose()
         {
+            base.Dispose();
+            if (isDisposed) return;
+            isDisposed = true;
+
             Token?.CancelAll(this);
-        }
-
-        public void SaveConfig()
-        {
-            ConfigData.ToJson("Config/config.json");
-        }
-
-        public void LoadConfig()
-        {
-            string path = Path.Combine(Application.persistentDataPath, "Config/config.json");
-            if (!File.Exists(path))
-            {
-                configData = new ConfigData();
-                configData?.Initialize();
-                SaveConfig();
-            }
-            else
-            {
-                configData = File.ReadAllText(path).FromJson<ConfigData>();
-            }
+            Config?.Dispose();
         }
     }
 }

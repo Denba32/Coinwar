@@ -1,8 +1,10 @@
-using StockGame.Scripts.Sounds;
-using StockGame.Scripts.Define;
 using Cysharp.Threading.Tasks;
-using UnityEngine.Audio;
 using Denba.Common;
+using FMOD.Studio;
+using FMODUnity;
+using StockGame.Scripts.Define;
+using StockGame.Scripts.Maps;
+using System.Collections.Generic;
 using UnityEngine;
 using System.Threading;
 
@@ -14,199 +16,232 @@ namespace StockGame.Scripts.Manager
         private const string MIXER_PATH = "Mixer/MainMixer";
         #endregion CONSTANTS
 
-        private AudioMixer audioMixer;
+        private Stack<(EventInstance Instance, string Path)> bgmStack = new();
+        private readonly Dictionary<string, EventInstance> _activeSfxInstances = new();
 
-        // BGM
-        [SerializeField] private SoundObject bgmAudio;
+        private EventInstance _currentEvent;
 
-        // SFX
-        [SerializeField] private SoundObject footStepAudio;
-        [SerializeField] private SoundObject skillAudio;
-        [SerializeField] private SoundObject uiAudio;
-        [SerializeField] private SoundObject missionAudio;
+        private Bus _masterBus;
+        private Bus _bgmBus;
+        private Bus _sfxBus;
+
+        private bool _hasBaseBgm = false;
+        private string _currentBaseBgmPath;
+
+        private Bus MasterBus => RuntimeManager.GetBus(GameDefine.ResourceDefine.FMODBus.MASTER);
+        private Bus BgmBus => RuntimeManager.GetBus(GameDefine.ResourceDefine.FMODBus.BGM);
+        private Bus SfxBus => RuntimeManager.GetBus(GameDefine.ResourceDefine.FMODBus.SFX);
 
         public override void Initialize()
         {
             base.Initialize();
+            _masterBus = MasterBus;
+            _bgmBus = BgmBus;
+            _sfxBus = SfxBus;
             var token = Managers.Token.GetToken(this, nameof(InitAsync));
             InitAsync(token).Forget();
         }
 
         private async UniTask InitAsync(CancellationToken token)
         {
-            await UniTask.Yield(cancellationToken:token); // AudioMixer 볼륨 미반영 방지를 위한 1Frame 대기
-            // Mixer 데이터 가져옴
-            audioMixer = await Managers.Resource.LoadAsync<AudioMixer>(MIXER_PATH, ResourceDirectory.Sounds);
-            bgmAudio?.Initialize(GetAudioMixerGroup(SoundType.BGM));
-            footStepAudio?.Initialize(GetAudioMixerGroup(SoundType.SFX, SoundEffectType.FootStep));
-            skillAudio?.Initialize(GetAudioMixerGroup(SoundType.SFX, SoundEffectType.Skill));
-            uiAudio?.Initialize(GetAudioMixerGroup(SoundType.SFX, SoundEffectType.UI));
-            missionAudio?.Initialize(GetAudioMixerGroup(SoundType.SFX, SoundEffectType.Mission));
-
-            SetVolume(SoundType.Master, Managers.ConfigData.MasterVolume);
-            SetVolume(SoundType.BGM, Managers.ConfigData.BgmVolume);
-            SetVolume(SoundType.SFX, Managers.ConfigData.SfxVolume);
+            await UniTask.Yield(cancellationToken: token);
         }
 
-        private SoundObject CreateSoundObject(Transform root = null)
+        public void ReplaceBaseBGM(string bgmPath)
         {
-            GameObject go = new GameObject { name = "SoundObject" };
+            bool hasBgm = !string.IsNullOrEmpty(bgmPath);
 
-            if (root == null) go.transform.SetParent(transform);
-            else go.transform.SetParent(root);
+            if (hasBgm && _hasBaseBgm && _currentBaseBgmPath == bgmPath) return;
 
-            SoundObject so = go.AddComponent<SoundObject>();
-            return so;
+            ClearStack();
+
+            _hasBaseBgm = hasBgm;
+            _currentBaseBgmPath = bgmPath;
+
+            if (!hasBgm) return; // BGM이 없는 씬 → 무음
+
+            _currentEvent = RuntimeManager.CreateInstance(bgmPath);
+            _currentEvent.start();
+            bgmStack.Push((_currentEvent, bgmPath));
         }
 
-        public void PlayBgm(string path, bool isLoop = true)
+        public void PushBGM(string bgmPath, bool isStopImmediatly = false)
         {
-            string _path = $"BGM/{path}";
-            var clip = ResourceManager.Instance.Load<AudioClip>(_path, ResourceDirectory.Sounds);
-
-            if (clip == null)
+            if (bgmStack.Count > 0)
             {
-                Debug.Log($"{path} is null");
+                var (currentInstance, currentPath) = bgmStack.Peek();
+
+                bool isSameAndAlive = currentPath == bgmPath && currentInstance.isValid();
+                if (isSameAndAlive)
+                {
+                    return;
+                }
+
+                if (currentInstance.isValid())
+                {
+                    currentInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+                    //currentInstance.setPaused(true);
+                }
+
+                if (currentPath == bgmPath && !currentInstance.isValid())
+                {
+                    bgmStack.Pop();
+                }
+            }
+
+            if (string.IsNullOrEmpty(bgmPath))
+            {
+                Debug.Log("BGMPath 가 읎다");
+                bgmStack.Push((default, bgmPath));
                 return;
             }
 
-            PlayBgm(clip, isLoop);
+            var instance = RuntimeManager.CreateInstance(bgmPath);
+            instance.start();
+            bgmStack.Push((instance, bgmPath));
         }
-        public void PlayBgm(AudioClip clip, bool isLoop = true)
+
+        public void PushBGM(ZoneType zone)
         {
-            if (clip == null || bgmAudio == null)
+            var path = GetBGMByZoneType(zone);
+            Debug.Log($"{zone.ToString()}: {path}");
+            PushBGM(path);
+        }
+
+        private string GetBGMByZoneType(ZoneType zone) => zone switch
+        {
+            ZoneType.None => string.Empty,
+            ZoneType.FishingSpot => GameDefine.ResourceDefine.FMODEvent.BGM103,
+            ZoneType.Port => GameDefine.ResourceDefine.FMODEvent.BGM103,
+            ZoneType.Bunker => GameDefine.ResourceDefine.FMODEvent.BGM102,
+            ZoneType.PoliceOffice => string.Empty,
+            ZoneType.Bank => string.Empty,
+            ZoneType.Station => string.Empty,
+            ZoneType.MayorGarden => string.Empty,
+            _ => GameDefine.ResourceDefine.FMODEvent.BGM101,
+        };
+
+
+        public void PopBGM()
+        {
+            if (bgmStack.Count == 0) return;
+
+            if (bgmStack.Count == 1)
             {
-                Debug.Log("Clip or BgmAudio is Null");
+                var (lastInstance, lastPath) = bgmStack.Pop();
+                if (lastInstance.isValid())
+                {
+                    lastInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+                    lastInstance.release();
+                }
+                bgmStack.Push((default, lastPath));
                 return;
             }
 
-            if (bgmAudio == null)
+            var (topInstance, _) = bgmStack.Pop();
+            if (topInstance.isValid())
             {
-                bgmAudio = CreateSoundObject();
-                bgmAudio?.Initialize(GetAudioMixerGroup(SoundType.BGM));
+                topInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+                topInstance.release();
             }
 
-            bgmAudio?.PlaySound(clip, SoundType.BGM);
-        }
-
-        public void PlaySound(string path, SoundType soundType, SoundEffectType soundEffectType = SoundEffectType.None, Vector3 position = default)
-        {
-            if (string.IsNullOrEmpty(path)) return;
-            var clip = ResourceManager.Instance.Load<AudioClip>(path, ResourceDirectory.Sounds);
-
-            if (clip == null)
+            if (bgmStack.Count > 0)
             {
-                Debug.Log($"{path} is null");
-                return;
-            }
-            
-            switch(soundType)
-            {
-                case SoundType.BGM: PlayBgm(clip); break;
-                case SoundType.SFX: PlaySE(clip, soundType, soundEffectType); break;
-                default: return;
-            }
-
-            //if (soundType == SoundType.SFX_3D)
-            //{
-            //    PlaySound3D(clip, position);
-            //    return;
-            //}
-        }
-
-        public void PlaySound(AudioClip clip, SoundType soundType)
-        {
-            if (clip == null)
-            {
-                Debug.Log("Clip is None");
-                return;
-            }
-
-            if (soundType == SoundType.BGM)
-            {
-                bgmAudio?.PlaySound(clip, soundType);
+                var (newTopInstance, _) = bgmStack.Peek();
+                if (newTopInstance.isValid())
+                {
+                    newTopInstance.setPaused(false);
+                }
             }
         }
 
-        public void PlaySE(AudioClip clip, SoundType soundType, SoundEffectType soundEffectType)
-        {
-            if (clip == null) return;
-            switch(soundEffectType)
-            {
-                case SoundEffectType.FootStep: footStepAudio?.PlaySound(clip, soundType); break;
-                case SoundEffectType.UI: uiAudio?.PlaySound(clip, soundType); break;
-                case SoundEffectType.Skill: skillAudio?.PlaySound(clip, soundType); break;
-                case SoundEffectType.Mission: missionAudio?.PlaySound(clip, soundType); break;
-            }
-        }
-        public void PlaySound3D(AudioClip clip, Vector3 position){}
+        public void PlaySfx(string eventName) => RuntimeManager.PlayOneShot(eventName);
 
-        public void StopBgm()
+        public void ClearStack()
         {
-            if (bgmAudio == null) return;
-            bgmAudio?.StopSound();
-        }
-
-        public void StopSE(SoundEffectType soundEffectType)
-        {
-            switch(soundEffectType)
+            while (bgmStack.Count > 0)
             {
-                case SoundEffectType.FootStep: footStepAudio?.StopSound(); break;
-                case SoundEffectType.Skill: skillAudio?.StopSound(); break;
-                case SoundEffectType.UI: uiAudio?.StopSound(); break;
-                case SoundEffectType.Mission: missionAudio?.StopSound(); break;
-            }
-        }
-
-        private AudioMixerGroup GetAudioMixerGroup(SoundType type, SoundEffectType soundEffectType = SoundEffectType.None)
-        {
-            string name = type.ToString();
-            if(type == SoundType.SFX)
-            {
-                name = soundEffectType.ToString();
-            }
-            return audioMixer.FindMatchingGroups(name)[0];
-        }
-
-        public void SetVolume(SoundType type, float value)
-        {
-            if(audioMixer == null)
-            {
-                Debug.Log("AudioMixer is Null");
-                return;
+                var (instance, _) = bgmStack.Pop();
+                if (instance.isValid())
+                {
+                    instance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+                    instance.release();
+                }
             }
 
-            SaveVolume(type, value);
-
-            float db = LinearToDb(value);
-            Debug.Log($"Mixer에 적용되는 수치 : {db}");
-            audioMixer.SetFloat(type.ToString(), db);
+            _hasBaseBgm = false;
         }
 
-        public void SaveVolume(SoundType type, float value)
+        /// <summary>
+        /// 동일 eventName의 사운드가 이미 재생 중이면 무시하고, 아니면 새로 재생합니다.
+        /// 여러 오브젝트가 같은 사운드를 공유해야 할 때(예: 동일 종류의 인터랙터 다수) 사용합니다.
+        /// </summary>
+        public void PlaySfxIfNotPlaying(string eventName)
         {
-            Debug.Log($"Save Volume : {value}");
-            Managers.ConfigData.SetVolume(value, type);
+            if (IsSfxPlaying(eventName)) return;
+
+            var instance = RuntimeManager.CreateInstance(eventName);
+            instance.start();
+            instance.release(); // 재생이 끝나면 FMOD가 알아서 정리됨. 핸들 자체는 isValid()로 계속 추적 가능
+            _activeSfxInstances[eventName] = instance;
         }
 
-        private float LinearToDb(float value)
+        public bool IsSfxPlaying(string eventName)
         {
-            if (value <= 0f) return -80f;
-            return Mathf.Log10(value) * 20f;
+            if (!_activeSfxInstances.TryGetValue(eventName, out var instance)) return false;
+            if (!instance.isValid()) return false;
+
+            instance.getPlaybackState(out var state);
+            return state == PLAYBACK_STATE.PLAYING || state == PLAYBACK_STATE.STARTING;
         }
 
-        public override void Clear()
+        #region Volume Control Method
+
+        public float GetVolume(GameDefine.AudioDefine.BusType busType)
         {
-            base.Clear();
-            StopBgm();
+            float volume = 0;
+            switch (busType)
+            {
+                case GameDefine.AudioDefine.BusType.Master:
+                    _masterBus.getVolume(out volume);
+                    break;
+                case GameDefine.AudioDefine.BusType.Bgm:
+                    _bgmBus.getVolume(out volume);
+                    break;
+                case GameDefine.AudioDefine.BusType.Sfx:
+                    _sfxBus.getVolume(out volume);
+                    break;
+            }
+            return volume;
         }
 
-        void OnDestroy()
+        public void SetVolume(GameDefine.AudioDefine.BusType busType, float volume)
         {
-            Clear();
-            audioMixer = null;
-            bgmAudio = null;
-            Managers.Token.CancelAll(this);
+            var isMute = volume <= 0;
+            switch (busType)
+            {
+                case GameDefine.AudioDefine.BusType.Master:
+                    {
+                        _masterBus.setMute(isMute);
+                        _masterBus.setVolume(volume);
+                        break;
+                    }
+                case GameDefine.AudioDefine.BusType.Bgm:
+                    {
+                        _bgmBus.setMute(isMute);
+                        _bgmBus.setVolume(volume);
+                        break;
+                    }
+                case GameDefine.AudioDefine.BusType.Sfx:
+                    {
+                        _sfxBus.setMute(isMute);
+                        _sfxBus.setVolume(volume);
+                        break;
+                    }
+                default: break;
+            }
         }
+
+        #endregion Volume Control Method
     }
 }

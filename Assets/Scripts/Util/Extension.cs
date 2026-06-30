@@ -9,7 +9,8 @@ using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 using static StockGame.Scripts.Define.GameDefine.ProbabilityDefine;
-namespace StockGame.Utility
+
+namespace StockGame.Scripts.Utility
 {
     public static class Extension
     {

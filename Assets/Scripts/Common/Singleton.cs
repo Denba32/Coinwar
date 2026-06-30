@@ -1,4 +1,6 @@
+using Cysharp.Threading.Tasks;
 using System;
+using System.Threading;
 using TRPG_Project.Scripts.Common;
 
 namespace Denba.Common
@@ -20,5 +22,6 @@ namespace Denba.Common
 
         public bool isLoaded = false;
         public virtual void Initialize() { }
+        public virtual UniTask InitializeAsync(CancellationToken token = default) => UniTask.CompletedTask;
     }
 }

@@ -25,6 +25,7 @@ namespace StockGame.Scripts.Manager
 
         public void RegisterUI<T>(T target, UIDefine.UILayer uiLayer) where T : UIBase
         {
+            if (target == null) return;
             int order = 0;
             if (!UIDict.ContainsKey(uiLayer))
             {

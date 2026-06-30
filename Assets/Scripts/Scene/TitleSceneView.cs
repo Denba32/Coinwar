@@ -25,10 +25,9 @@ namespace StockGame.Scripts.Scenes
 
         public override async UniTask Initialize(CancellationToken token)
         {
+            await base.Initialize(token);
             Managers.UI.RegisterUI(View.TitleMenu, Define.GameDefine.UIDefine.UILayer.SceneUI);
             View.TitleMenu.Bind<TitleMenuView, TitleMenuPresenter>();
-            Managers.Sound.PlayBgm("BGM001");
-            await base.Initialize(token);
         }
         public override UniTask Exit(CancellationToken token)
         {

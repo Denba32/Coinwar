@@ -1,10 +1,11 @@
+using Cysharp.Threading.Tasks;
+using FMODUnity;
 using StockGame.Common.Interfaces;
 using StockGame.Scripts.Define;
-using Cysharp.Threading.Tasks;
-using UnityEngine;
+using StockGame.Scripts.Manager;
 using System.Threading;
 using UniRx;
-using StockGame.Scripts.Manager;
+using UnityEngine;
 
 namespace StockGame.Scripts.Scenes
 {
@@ -17,10 +18,10 @@ namespace StockGame.Scripts.Scenes
     {
         protected CompositeDisposable _disposables = new();
         protected TView View;
-        protected string bgmPath;
+        public string BGMPath { get; }
 
         public SceneBaseController() { }
-        public SceneBaseController(string bgmPath = "") { this.bgmPath = bgmPath; }
+        public SceneBaseController(string bgmPath = "") { this.BGMPath = bgmPath; }
 
         public virtual UniTask Enter(CancellationToken token)
         {
@@ -29,14 +30,12 @@ namespace StockGame.Scripts.Scenes
 
         public virtual UniTask Exit(CancellationToken token)
         {
-            Managers.Sound.StopBgm();
             return UniTask.CompletedTask;
         }
 
         public virtual UniTask Initialize(CancellationToken cts)
         {
-            if (string.IsNullOrEmpty(bgmPath)) return UniTask.CompletedTask;
-            Managers.Sound.PlaySound(bgmPath, SoundType.BGM);
+            ApplySceneBGM(this);
             return UniTask.CompletedTask;
         }
 
@@ -48,6 +47,11 @@ namespace StockGame.Scripts.Scenes
         public void SetView(SceneBaseView view)
         {
             View = (TView)view;
+        }
+
+        private void ApplySceneBGM(ISceneController sceneController)
+        {
+            Managers.Sound.ReplaceBaseBGM(sceneController.BGMPath);
         }
     }
 

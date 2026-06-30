@@ -1,10 +1,8 @@
 using Cysharp.Threading.Tasks;
 using Denba.Common;
-using StockGame.Scripts.Manager;
-using StockGame.Utility;
+using StockGame.Scripts.Utility;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.Netcode;
 using UnityEngine;
 using static StockGame.Scripts.Define.GameDefine.JobDefine;
 using static StockGame.Scripts.Define.GameDefine.ProbabilityDefine;
@@ -83,19 +81,18 @@ namespace StockGame.Scripts.Manager
             return base.Initialize();
         }
 
+        public override void OnNetworkSpawn()
+        {
+            base.OnNetworkSpawn();
+            ResetAllocateQueue();
+        }
+
+        /// <summary>
+        /// 게임 종료 시 큐 초기화 — 다음 게임에서 직업 배정이 편향되지 않도록
+        /// </summary>
         public void ResetAllocateQueue()
         {
             jobAllocateQueue = null;
-        }
-
-        [ServerRpc(RequireOwnership = false)]
-        public void RequestJobServerRpc(ulong ownerId)
-        {
-            RefreshQueueIfNeeded();
-            var playerInfo = GameManager.Instance.GetLocalPlayerInfo();
-            if (playerInfo == null) return;
-            var job = jobAllocateQueue?.Dequeue();
-            GameManager.Instance.UpdateJobInfoServerRpc(new NetworkJobInfo(job), ownerId);
         }
 
         public NetworkJobInfo GetJobByType(JobType type)
@@ -106,16 +103,21 @@ namespace StockGame.Scripts.Manager
 
         public NetworkJobInfo GetJobByRandom()
         {
-            Debug.Log("GetJobByRandom");
-            RefreshQueueIfNeeded();
-            var job = jobAllocateQueue.Dequeue();
-            Debug.Log(job.JobName);
+            var job = jobAllocateQueue?.Dequeue();
+            if (job == null)
+            {
+                Debug.LogError("Job 정보 없음");
+                return default;
+            }
             return new NetworkJobInfo(job);
         }
 
-        private void RefreshQueueIfNeeded()
+        public void PrepareQueueForRound(int playerCount)
         {
-            if (jobAllocateQueue == null || jobAllocateQueue.Count <= 0)
+            if (playerCount > jobList.Count)
+                Debug.LogWarning($"[JobManager] 인원({playerCount}) > 직업 종류({jobList.Count}), 중복 불가피");
+
+            if (jobAllocateQueue == null || jobAllocateQueue.Count < playerCount)
             {
                 jobList.Shuffle();
                 jobAllocateQueue = new(jobList);

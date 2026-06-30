@@ -33,6 +33,13 @@ namespace StockGame.Scripts.Manager
         private Subject<ChatLog> onMessageReceived = new();
         public IObservable<ChatLog> OnMessageReceived => onMessageReceived;
 
+        public override void OnNetworkSpawn()
+        {
+            base.OnNetworkSpawn();
+            if (!IsServer) return;
+            Clear();
+        }
+
         public void SetChatPanelContent(RectTransform panelContent)
         {
             ChatPanelContent = panelContent;

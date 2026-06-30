@@ -1,4 +1,4 @@
-using Cysharp.Threading.Tasks;
+ï»¿using Cysharp.Threading.Tasks;
 using Denba.Common;
 using StockGame.Scripts.UI;
 using System;
@@ -30,13 +30,13 @@ namespace StockGame.Scripts.Manager
         public NetworkManager Network => NetworkManager.Singleton;
 
         private bool isInitialize = false;
-        private UniTask? _initTask = null; // ÁøÇà ÁßÀÎ ÃÊ±âÈ­ ÅÂ½ºÅ© Ä³½Ì
+        private UniTask? _initTask = null; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­ ï¿½Â½ï¿½Å© Ä³ï¿½ï¿½
 
         private async UniTask EnsureInitializedAsync()
         {
             if (isInitialize) return;
 
-            // ÀÌ¹Ì ÃÊ±âÈ­ ÁßÀÌ¸é °°Àº ÅÂ½ºÅ© ´ë±â
+            // ï¿½Ì¹ï¿½ ï¿½Ê±ï¿½È­ ï¿½ï¿½ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Â½ï¿½Å© ï¿½ï¿½ï¿½
             if (_initTask.HasValue)
             {
                 await _initTask.Value;
@@ -52,7 +52,7 @@ namespace StockGame.Scripts.Manager
         {
             try
             {
-                // ÀÌ¹Ì ÃÊ±âÈ­µÈ °æ¿ì ½ºÅµ
+                // ï¿½Ì¹ï¿½ ï¿½Ê±ï¿½È­ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½Åµ
                 if (UnityServices.State != ServicesInitializationState.Initialized)
                     await UnityServices.InitializeAsync();
 
@@ -77,6 +77,7 @@ namespace StockGame.Scripts.Manager
 
         }
 
+        /* Host */
         private async UniTask<Allocation> CreateRelayData(int maxConnections)
         {
             try
@@ -104,6 +105,7 @@ namespace StockGame.Scripts.Manager
                 if (Network.NetworkConfig.NetworkTransport is not UnityTransport transport)
                     return false;
 
+                // ï¿½Ì°ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½ È®ï¿½ï¿½
                 Debug.Log($"[Host] ConnectionApproval: {Network.NetworkConfig.ConnectionApproval}");
 
                 transport.SetRelayServerData(
@@ -118,7 +120,7 @@ namespace StockGame.Scripts.Manager
                 LogNetworkConfig();
 
                 var started = Network.StartHost();
-                Debug.Log($"[Host] StartHost °á°ú: {started}");
+                Debug.Log($"[Host] StartHost ï¿½ï¿½ï¿½: {started}");
                 return started;
             }
             catch (RelayServiceException ex)
@@ -144,7 +146,7 @@ namespace StockGame.Scripts.Manager
                 Debug.Log($"Check Join Code : {joincode}");
 
                 var client = await RelayService.Instance.JoinAllocationAsync(joincode);
-                Debug.Log($"[Join] JoinAllocation ¼º°ø - AllocationId: {client.AllocationId}");
+                Debug.Log($"[Join] JoinAllocation ï¿½ï¿½ï¿½ï¿½ - AllocationId: {client.AllocationId}");
                 Network.NetworkConfig.ConnectionApproval = true;
 
                 if (Network.NetworkConfig.NetworkTransport is not UnityTransport transport)
@@ -175,7 +177,7 @@ namespace StockGame.Scripts.Manager
                 if (!result.success)
                 {
                     var alert = await UIManager.Instance.Open<UI_AlertView>(Define.GameDefine.UIDefine.UILayer.Popup);
-                    alert.SetAlert(string.IsNullOrEmpty(result.reason) ? "¿¬°á¿¡ ½ÇÆÐÇß½À´Ï´Ù." : result.reason);
+                    alert.SetAlert(string.IsNullOrEmpty(result.reason) ? "ï¿½ï¿½ï¿½á¿¡ ï¿½ï¿½ï¿½ï¿½ï¿½ß½ï¿½ï¿½Ï´ï¿½." : result.reason);
                 }
 
                 return result.success;
@@ -199,23 +201,23 @@ namespace StockGame.Scripts.Manager
             bool failed = false;
             string disconnectReason = string.Empty;
 
-            // Client º»ÀÎÀÌ ¿¬°áµÆÀ» ¶§
+            // Client ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
             void OnConnected(ulong clientId)
             {
                 if (clientId == Network.LocalClientId)
                 {
-                    Debug.Log($"[Join] ¿¬°á ¼º°ø - ClientId: {clientId}");
+                    Debug.Log($"[Join] ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ - ClientId: {clientId}");
                     connected = true;
                 }
             }
 
-            // ¿¬°á °ÅºÎ or ²÷±è
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½Åºï¿½ or ï¿½ï¿½ï¿½ï¿½
             void OnDisconnected(ulong clientId)
             {
                 if (clientId == Network.LocalClientId)
                 {
                     disconnectReason = Network.DisconnectReason;
-                    Debug.Log($"[Join] ¿¬°á ½ÇÆÐ - Reason: {disconnectReason}");
+                    Debug.Log($"[Join] ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ - Reason: {disconnectReason}");
                     failed = true;
                 }
             }
@@ -236,8 +238,8 @@ namespace StockGame.Scripts.Manager
                 Debug.LogWarning("Connection timed out");
                 Managers.Token.Cancel(this, nameof(WaitForConnectionAsync));
                 Network.Shutdown();
-                
-                return (false, "¿¬°á ½Ã°£ÀÌ ÃÊ°úµÆ½À´Ï´Ù.");
+
+                return (false, "ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½Ê°ï¿½ï¿½Æ½ï¿½ï¿½Ï´ï¿½.");
             }
             finally
             {
@@ -248,22 +250,30 @@ namespace StockGame.Scripts.Manager
 
         private void OnConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
         {
-            Debug.Log("[Approval] ÄÝ¹é È£ÃâµÊ");
+            Debug.Log("[Approval] ï¿½Ý¹ï¿½ È£ï¿½ï¿½ï¿½");
 
             if (!Network.IsServer)
             {
-                Debug.Log("[Approval] IsServer false - ¸®ÅÏ");
+                Debug.Log("[Approval] IsServer false - ï¿½ï¿½ï¿½ï¿½");
                 return;
             }
 
             int currentUserCount = Network.ConnectedClientsList.Count;
-            Debug.Log($"[Approval] ÇöÀç ÀÎ¿ø: {currentUserCount}, ÃÖ´ë: {maxUserCount}");
+            Debug.Log($"[Approval] ï¿½ï¿½ï¿½ï¿½ ï¿½Î¿ï¿½: {currentUserCount}, ï¿½Ö´ï¿½: {maxUserCount}");
 
-            if (currentUserCount >= maxUserCount)
+            bool isHost = request.ClientNetworkId == NetworkManager.ServerClientId;
+
+            if (!isHost && currentUserCount >= maxUserCount)
             {
                 response.Approved = false;
-                response.Reason = "¹æÀÌ °¡µæ Ã¡½À´Ï´Ù.";
-                Debug.Log("[Approval] °ÅºÎ - ¹æ °¡µæÂü");
+                response.Reason = "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã¡ï¿½ï¿½ï¿½Ï´ï¿½.";
+                Debug.Log("[Approval] ï¿½Åºï¿½ - ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+            }
+            else if (!isHost && GameManager.Instance.IsGameStart.Value)
+            {
+                response.Approved = false;
+                response.Reason = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½ÛµÇ¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½";
+                Debug.Log("[Approval] ï¿½Åºï¿½ - ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½Ûµï¿½");
             }
             else
             {
@@ -273,7 +283,7 @@ namespace StockGame.Scripts.Manager
                 response.Position = Vector3.zero;
                 response.Rotation = Quaternion.identity;
                 response.Pending = false;
-                Debug.Log("[Approval] ½ÂÀÎµÊ");
+                Debug.Log("[Approval] ï¿½ï¿½ï¿½Îµï¿½");
             }
         }
 

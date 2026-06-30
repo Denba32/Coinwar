@@ -7,7 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using StockGame.Scripts.Base;
-
+using DG.Tweening;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -185,6 +185,16 @@ namespace StockGame.Scripts.UI
             canvasGroup.blocksRaycasts = true;
         }
 
+        public async UniTask ShowAsync(float duration, bool isInteractable = true)
+        {
+            if (canvasGroup == null) return;
+            canvasGroup.alpha = 0f;
+            canvasGroup.interactable = isInteractable;
+            canvasGroup.blocksRaycasts = isInteractable;
+            var token = Managers.Token.GetToken(this);
+            await canvasGroup.DOFade(1f, duration).SetEase(Ease.InQuad).SetLink(gameObject).ToUniTask(cancellationToken: token);
+        }
+
         public virtual void Hide()
         {
             if (canvasGroup == null) return;
@@ -193,11 +203,27 @@ namespace StockGame.Scripts.UI
             canvasGroup.blocksRaycasts = false;
         }
 
-        public int GetOrder() => canvas?.sortingOrder ?? 0;
+
+        public async UniTask HideAsync(float duration, bool isInteractable = true)
+        {
+            if (canvasGroup == null) return;
+            canvasGroup.alpha = 1f;
+            canvasGroup.interactable = isInteractable;
+            canvasGroup.blocksRaycasts = isInteractable;
+            var token = Managers.Token.GetToken(this);
+            await canvasGroup.DOFade(0f, duration).SetEase(Ease.InQuad).SetLink(gameObject).ToUniTask(cancellationToken: token);
+        }
+
+        public int GetOrder()
+        {
+            if (this == null || canvas == null) return 0; // Fake Null 체크
+            return canvas.sortingOrder;
+        }
 
         public virtual void Dispose()
         {
             if (isDisposed) return;
+            Managers.Token.Cancel(this);
             isDisposed = true;
             presenter?.Dispose();
 

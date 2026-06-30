@@ -10,6 +10,7 @@ namespace StockGame.Common.Interfaces
     /* Scene */
     public interface ISceneController : IDisposable
     {
+        string BGMPath { get; }
         UniTask Enter(CancellationToken token); // Scene 시작
         UniTask Initialize(CancellationToken token); // Scene 초기화
         UniTask Exit(CancellationToken token); // Scene 종료

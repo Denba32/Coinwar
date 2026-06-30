@@ -16,8 +16,8 @@ namespace StockGame.Scripts.Scenes
         public override async UniTask Initialize(CancellationToken token)
         {
             Debug.Log("Boot Scene Initialize");
-            await NetworkSceneManager.Instance.ChangeScene(Define.SceneEnum.TitleScene, useNetworkSceneManager:false);
             await base.Initialize(token);
+            await NetworkSceneManager.Instance.ChangeScene(Define.SceneEnum.TitleScene, useNetworkSceneManager:false);
         }
 
         public override UniTask Exit(CancellationToken token)

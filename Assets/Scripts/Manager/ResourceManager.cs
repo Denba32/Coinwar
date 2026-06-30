@@ -1,11 +1,9 @@
 using Cysharp.Threading.Tasks;
 using Denba.Common;
 using StockGame.Scripts.Define;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 
 namespace StockGame.Scripts.Manager
@@ -16,7 +14,6 @@ namespace StockGame.Scripts.Manager
     /// </summary>
     public class ResourceManager : Singleton<ResourceManager>
     {
-        private Dictionary<string, UnityEngine.Object> dict = new Dictionary<string, UnityEngine.Object>();
 
         public async UniTask InitAsync(CancellationToken token)
         {
@@ -42,6 +39,8 @@ namespace StockGame.Scripts.Manager
             }
             Debug.Log($"[ResourceManager] 초기화 완료 - 총 {dict.Count}개 로드");
         }
+
+        private Dictionary<string, UnityEngine.Object> dict = new Dictionary<string, UnityEngine.Object>();
 
         public T Load<T>(string path = "", ResourceDirectory directory = ResourceDirectory.Prefabs) where T : UnityEngine.Object
         {
