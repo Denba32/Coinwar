@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace TRPG_Project.Scripts.Common
+namespace Denba.Common
 {
     public class DisposableContainer : IDisposable, ICollection<IDisposable>
     {

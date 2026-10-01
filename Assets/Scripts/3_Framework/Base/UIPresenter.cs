@@ -1,5 +1,5 @@
-using TRPG_Project.Scripts.Common;
 using Cysharp.Threading.Tasks;
+using Denba.Common;
 using StockGame.Scripts.UI;
 using System.Threading;
 
