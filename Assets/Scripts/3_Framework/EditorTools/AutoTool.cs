@@ -5,11 +5,13 @@ public class AutoTool
 {
     private static void RemoveMissingScripts(GameObject obj)
     {
+        // 현재 오브젝트 검사
         if (GameObjectUtility.GetMonoBehavioursWithMissingScriptCount(obj) > 0)
         {
             GameObjectUtility.RemoveMonoBehavioursWithMissingScript(obj);
         }
 
+        // 자식 오브젝트 검사
         foreach (Transform child in obj.transform)
         {
             if (GameObjectUtility.GetMonoBehavioursWithMissingScriptCount(child.gameObject) > 0)
@@ -45,4 +47,14 @@ public class AutoTool
         }
     }
 
+    [MenuItem("Assets/Create/CustomUI/Popup")]
+    static void CreateFromBuiltin()
+    {
+        var templatePath = "Assets/Editor/ScriptTemplates/CustomPopupUI.cs.txt";
+
+        ProjectWindowUtil.CreateScriptAssetFromTemplateFile(
+            templatePath,
+            "CustomPopupUI.cs"
+        );
+    }
 }
