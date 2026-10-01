@@ -26,28 +26,28 @@ namespace StockGame.Scripts.UI.Missions
         [SerializeField] private RectTransform interactBounds;
 
         [Space]
-        [Header("Slot Drop ¼º°ø ½Ã ÀÌµ¿ À§Ä¡ ÇÇº¿")]
+        [Header("Slot Drop ì„±ê³µ ì‹œ ì´ë™ ìœ„ì¹˜ í”¼ë´‡")]
         [SerializeField] private RectTransform interactSuccessPivot = null;
 
         [Space]
-        [Header("ÇÊ¿äÇÑ °³¼ö")]
+        [Header("í•„ìš”í•œ ê°œìˆ˜")]
         [SerializeField] private int requiredCount = 0;
 
         [Space]
-        [Header("ÇöÀç ÃæÁ·ÇÑ °³¼ö")]
+        [Header("í˜„ì¬ ì¶©ì¡±í•œ ê°œìˆ˜")]
         [SerializeField] private int completedCount = 0;
         [SerializeField] private int targetItemId;
 
         [Space]
-        [Header("Drop Ã¼Å© Çã¿ë ¹üÀ§ 0 - 1")]
+        [Header("Drop ì²´í¬ í—ˆìš© ë²”ìœ„ 0 - 1")]
         [Range(0f, 1f)]
         [SerializeField] private float threshold;
 
         [Space]
-        [Header("Drop ½Ã XÃàÀ¸·Î ·£´ıÇÑ À§Ä¡¿¡ °íÁ¤")]
+        [Header("Drop ì‹œ Xì¶•ìœ¼ë¡œ ëœë¤í•œ ìœ„ì¹˜ì— ê³ ì •")]
         [SerializeField] private bool isRandomlyDrop = false;
         [Space]
-        [Header("·£´ı ½Ã ¹üÀ§")]
+        [Header("ëœë¤ ì‹œ ë²”ìœ„")]
         [SerializeField] private float randomRange = 0f;
 
         private Subject<Unit> onSlotFilled = new Subject<Unit>();

@@ -14,7 +14,7 @@ namespace StockGame.Scripts.UI.Missions
 {
     public class HeatingCheckMissionUI : MissionUIBase
     {
-        private const string CelsiusSymbol = "¡É";
+        private const string CelsiusSymbol = "â„ƒ";
         private List<int> inductionTemperature = new List<int>()
         {
             20, 40, 60, 80, 100

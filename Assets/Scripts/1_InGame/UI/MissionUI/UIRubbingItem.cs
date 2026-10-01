@@ -14,11 +14,11 @@ namespace StockGame.Scripts.UI.Missions
     }
     public sealed class UIRubbingItem : MonoBehaviour, IDragItem, IRubbingItem
     {
-        [Header("Drag »óÈ£ÀÛ¿ë ¹üÀ§")]
+        [Header("Drag ìƒí˜¸ì‘ìš© ë²”ìœ„")]
         [SerializeField] private RectTransform rect;
 
         [Space]
-        [Header("Drag ÇÒ ¼ö ÀÖ´Â ¹üÀ§")]
+        [Header("Drag í•  ìˆ˜ ìˆëŠ” ë²”ìœ„")]
         [SerializeField] private RectTransform draggableBoundary;
 
         [SerializeField] private Canvas canvas;
@@ -37,7 +37,7 @@ namespace StockGame.Scripts.UI.Missions
         public int Id => id;
 
         private int status = -1;
-        private Vector2 rawDragPosition; // Å¬·¥ÇÁµÇÁö ¾ÊÀº ½ÇÁ¦ µå·¡±× À§Ä¡ (Ä¿¼­ ÃßÀû¿ë)
+        private Vector2 rawDragPosition; // í´ë¨í”„ë˜ì§€ ì•Šì€ ì‹¤ì œ ë“œë˜ê·¸ ìœ„ì¹˜ (ì»¤ì„œ ì¶”ì ìš©)
 
         public RectTransform Bounds => bounds;
 
@@ -45,7 +45,7 @@ namespace StockGame.Scripts.UI.Missions
         {
             if (!isDragable) return;
             startParent = transform.parent;
-            rawDragPosition = rect.anchoredPosition; // µå·¡±× ½ÃÀÛ ½ÃÁ¡ À§Ä¡·Î ÃÊ±âÈ­
+            rawDragPosition = rect.anchoredPosition; // ë“œë˜ê·¸ ì‹œì‘ ì‹œì  ìœ„ì¹˜ë¡œ ì´ˆê¸°í™”
             transform.SetParent(canvas.transform);
             group.blocksRaycasts = false;
             UIManager.Instance.SetDrag(this);
@@ -64,8 +64,8 @@ namespace StockGame.Scripts.UI.Missions
         public void OnDrag(PointerEventData eventData)
         {
             if (!isDragable) return;
-            rawDragPosition += eventData.delta / canvas.scaleFactor; // Å¬·¥ÇÁ ¾øÀÌ Ä¿¼­ ¿òÁ÷ÀÓ ±×´ë·Î ´©Àû
-            rect.anchoredPosition = ClampToCanvas(rawDragPosition);   // È­¸é¿¡ º¸¿©ÁÙ ¶§¸¸ Å¬·¥ÇÁ
+            rawDragPosition += eventData.delta / canvas.scaleFactor; // í´ë¨í”„ ì—†ì´ ì»¤ì„œ ì›€ì§ì„ ê·¸ëŒ€ë¡œ ëˆ„ì 
+            rect.anchoredPosition = ClampToCanvas(rawDragPosition);   // í™”ë©´ì— ë³´ì—¬ì¤„ ë•Œë§Œ í´ë¨í”„
         }
 
         public void OnEndDrag(PointerEventData eventData)

@@ -14,19 +14,19 @@ namespace StockGame.Scripts.UI.Missions
     {
         private const string INTERACT_TARGET = "InteractBounds";
 
-        [Header("Drag »óÈ£ÀÛ¿ë ¹üÀ§")]
+        [Header("Drag ìƒí˜¸ì‘ìš© ë²”ìœ„")]
         [SerializeField] private RectTransform rect;
 
         [Space]
-        [Header("Drag ÇÒ ¼ö ÀÖ´Â ¹üÀ§")]
+        [Header("Drag í•  ìˆ˜ ìˆëŠ” ë²”ìœ„")]
         [SerializeField] private RectTransform draggableBoundary;
 
         [Space]
-        [Header("Á¦°Å ÀÎ½Ä ¹üÀ§")]
+        [Header("ì œê±° ì¸ì‹ ë²”ìœ„")]
         [SerializeField] private Collider2D interactionBounds;
 
         [Space]
-        [Header("Á¦°Å ´ë»ó ºÎÂø ¹üÀ§")]
+        [Header("ì œê±° ëŒ€ìƒ ë¶€ì°© ë²”ìœ„")]
         [SerializeField] private RectTransform attachmentArea;
 
         [SerializeField] private Canvas canvas;
@@ -38,11 +38,11 @@ namespace StockGame.Scripts.UI.Missions
         [SerializeField] private List<Sprite> changedSprites = new();
 
         [Space]
-        [Header("ÇÊ¿äÇÑ °³¼ö")]
+        [Header("í•„ìš”í•œ ê°œìˆ˜")]
         [SerializeField] private int requiredCount = 0;
 
         [Space]
-        [Header("ÇöÀç ÃæÁ·ÇÑ °³¼ö")]
+        [Header("í˜„ì¬ ì¶©ì¡±í•œ ê°œìˆ˜")]
         [SerializeField] private int completedCount = 0;
 
         private Subject<Unit> onCompleted = new Subject<Unit>();

@@ -71,20 +71,20 @@ namespace StockGame.Scripts.Manager
             {
                 devConsole.SetActive(false);
 #if DEV_BUILD || UNITY_EDITOR
-                Debug.Log("°³¹ß ºôµå - ¶óÀÌ¼¾½º Ã¼Å©¸¦ °Ç³Ê¶İ´Ï´Ù.");
+                Debug.Log("ê°œë°œ ë¹Œë“œ - ë¼ì´ì„¼ìŠ¤ ì²´í¬ë¥¼ ê±´ë„ˆëœë‹ˆë‹¤.");
 #else
                 await Steam.InitializeAsync(token);
 
                 if (!Steam.IsInitialized)
                 {
-                    Debug.LogError("Steam ÃÊ±âÈ­¿¡ ½ÇÆĞÇÏ¿© °ÔÀÓÀ» Á¾·áÇÕ´Ï´Ù.");
+                    Debug.LogError("Steam ì´ˆê¸°í™”ì— ì‹¤íŒ¨í•˜ì—¬ ê²Œì„ì„ ì¢…ë£Œí•©ë‹ˆë‹¤.");
                     QuitGame();
                     return;
                 }
 
                 if (!Steam.CheckLicense())
                 {
-                    Debug.LogError("Á¤Ç° ¶óÀÌ¼¾½º°¡ È®ÀÎµÇÁö ¾Ê¾Æ °ÔÀÓÀ» Á¾·áÇÕ´Ï´Ù.");
+                    Debug.LogError("ì •í’ˆ ë¼ì´ì„¼ìŠ¤ê°€ í™•ì¸ë˜ì§€ ì•Šì•„ ê²Œì„ì„ ì¢…ë£Œí•©ë‹ˆë‹¤.");
                     QuitGame();
                     return;
                 }
@@ -121,11 +121,11 @@ namespace StockGame.Scripts.Manager
             }
             catch (Exception e)
             {
-                Debug.LogError($"InitAsync ½ÇÆĞ: {e.Message}\n{e.StackTrace}");
+                Debug.LogError($"InitAsync ì‹¤íŒ¨: {e.Message}\n{e.StackTrace}");
                 throw;
             }
 
-            Debug.Log("ÃÊ±âÈ­ ¿Ï·á");
+            Debug.Log("ì´ˆê¸°í™” ì™„ë£Œ");
         }
 
         public override void Clear()

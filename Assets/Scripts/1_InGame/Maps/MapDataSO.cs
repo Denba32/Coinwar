@@ -11,18 +11,18 @@ namespace StockGame.Scripts.Maps
         [Header("Game Round")]
         public int MaxRound;
 
-        [Header("ÁÖ½Ä È®ÀÎ ½Ã°£")]
+        [Header("ì£¼ì‹ í™•ì¸ ì‹œê°„")]
         public int StockCheckTime;
-        [Header("ÆÄ¹Ö ½Ã°£")]
+        [Header("íŒŒë° ì‹œê°„")]
         public int ExploreTime;
-        [Header("ÁÖ½Ä ±¸¸Å ¹× ÆÇ¸Å ½Ã°£")]
+        [Header("ì£¼ì‹ êµ¬ë§¤ ë° íŒë§¤ ì‹œê°„")]
         public int StockPurchaseAndSellTime;
-        [Header("¼øÀ§ È®ÀÎ ½Ã°£")]
+        [Header("ìˆœìœ„ í™•ì¸ ì‹œê°„")]
         public int ReleaseRankingTime;
-        [Header("ÃÖÁ¾ °á°ú ¹ßÇ¥ ½Ã°£")]
+        [Header("ìµœì¢… ê²°ê³¼ ë°œí‘œ ì‹œê°„")]
         public int ResultTime;
 
-        [Header("Á¦°øµÇ´Â ¹Ì¼Ç ¼ö")]
+        [Header("ì œê³µë˜ëŠ” ë¯¸ì…˜ ìˆ˜")]
         public int MissionCount;
     }
 

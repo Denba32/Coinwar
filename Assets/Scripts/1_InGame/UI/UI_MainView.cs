@@ -55,7 +55,7 @@ namespace StockGame.Scripts.UI
 
         protected override void OnBind()
         {
-            Debug.Log("MainView ÃÊ±âÈ­");
+            Debug.Log("MainView ì´ˆê¸°í™”");
             View.DropDown.Initialize();
             View.CardImage.gameObject.SetActive(false);
             View.CoinText.text = "0";
@@ -103,7 +103,7 @@ namespace StockGame.Scripts.UI
 
         private void OnPlayerDataChanged(NetworkListEvent<GameDefine.NetworkPlayerJoinInfo> changeEvent)
         {
-            // View°¡ ÀÌ¹Ì ÆÄ±«µÈ °æ¿ì Ã³¸®ÇÏÁö ¾ÊÀ½
+            // Viewê°€ ì´ë¯¸ íŒŒê´´ëœ ê²½ìš° ì²˜ë¦¬í•˜ì§€ ì•ŠìŒ
             if (View == null) return;
             if (changeEvent.Value.ClientId != NetworkManager.Singleton.LocalClientId) return;
 
@@ -115,10 +115,10 @@ namespace StockGame.Scripts.UI
 
             if (prev.JobInfo.JobType != current.JobInfo.JobType)
             {
-                Debug.Log("Á÷¾÷ ¼³Á¤");
+                Debug.Log("ì§ì—… ì„¤ì •");
                 currentJobInfo = current.JobInfo;
                 var disable = current.JobInfo.GetJobSkillIconDisable();
-                // Image°¡ ÆÄ±«µÈ °æ¿ì Á¢±ÙÇÏÁö ¾ÊÀ½
+                // Imageê°€ íŒŒê´´ëœ ê²½ìš° ì ‘ê·¼í•˜ì§€ ì•ŠìŒ
                 if (View.SkillButton != null && View.SkillButton.image != null)
                     View.SkillButton.image.sprite = disable;
             }
@@ -178,8 +178,8 @@ namespace StockGame.Scripts.UI
         }
 
         /// <summary>
-        /// UI°¡ ´İÈ÷°Å³ª ¾ÀÀÌ ÀüÈ¯µÉ ¶§ ÀÌº¥Æ® ±¸µ¶ ÇØÁ¦
-        /// GameManager ¿ÀºêÁ§Æ®°¡ ¸ÕÀú ÆÄ±«µÉ ¼ö ÀÖÀ¸¹Ç·Î null Ã¼Å© ÇÊ¼ö
+        /// UIê°€ ë‹«íˆê±°ë‚˜ ì”¬ì´ ì „í™˜ë  ë•Œ ì´ë²¤íŠ¸ êµ¬ë… í•´ì œ
+        /// GameManager ì˜¤ë¸Œì íŠ¸ê°€ ë¨¼ì € íŒŒê´´ë  ìˆ˜ ìˆìœ¼ë¯€ë¡œ null ì²´í¬ í•„ìˆ˜
         /// </summary>
         public override void Dispose()
         {

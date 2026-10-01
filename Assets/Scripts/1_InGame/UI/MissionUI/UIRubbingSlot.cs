@@ -8,11 +8,11 @@ namespace StockGame.Scripts.UI.Missions
 {
     public sealed class UIRubbingSlot : MonoBehaviour
     {
-        [Header("¹®Áú·¯¾ß ÇÏ´Â È½¼ö")]
+        [Header("ë¬¸ì§ˆëŸ¬ì•¼ í•˜ëŠ” íšŸìˆ˜")]
         [SerializeField] private int requiredRubCount = 2;
 
         [Space]
-        [Header("¹®Áö¸¦ ¼ö ÀÖ´Â ´ë»ó Id")]
+        [Header("ë¬¸ì§€ë¥¼ ìˆ˜ ìˆëŠ” ëŒ€ìƒ Id")]
         [SerializeField] private int targetItemId;
 
         [SerializeField] private bool isInside;

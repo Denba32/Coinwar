@@ -5,13 +5,13 @@ public class AutoTool
 {
     private static void RemoveMissingScripts(GameObject obj)
     {
-        // ÇöÀç ¿ÀºêÁ§Æ® °Ë»ç
+        // í˜„ìž¬ ì˜¤ë¸Œì íŠ¸ ê²€ì‚¬
         if (GameObjectUtility.GetMonoBehavioursWithMissingScriptCount(obj) > 0)
         {
             GameObjectUtility.RemoveMonoBehavioursWithMissingScript(obj);
         }
 
-        // ÀÚ½Ä ¿ÀºêÁ§Æ® °Ë»ç
+        // ìžì‹ ì˜¤ë¸Œì íŠ¸ ê²€ì‚¬
         foreach (Transform child in obj.transform)
         {
             if (GameObjectUtility.GetMonoBehavioursWithMissingScriptCount(child.gameObject) > 0)

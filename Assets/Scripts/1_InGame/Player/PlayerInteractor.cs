@@ -17,7 +17,7 @@ namespace StockGame.Scripts.Players
 
         public IInteractable ClosestInteractable { get; private set; }
 
-        // Scan Áß½ÉÁ¡ 
+        // Scan ì¤‘ì‹¬ì  
         public void Initialize(PlayerNetwork player)
         {
             this.player = player;
@@ -129,7 +129,7 @@ namespace StockGame.Scripts.Players
         private bool IsAlive(IInteractable interactable)
         {
             if (interactable == null) return false;
-            if (interactable is Object unityObj) return unityObj != null; // Fake Null ºñ±³ ¸í½ÃÀû Àû¿ë
+            if (interactable is Object unityObj) return unityObj != null; // Fake Null ë¹„êµ ëª…ì‹œì  ì ìš©
             return true;
         }
 

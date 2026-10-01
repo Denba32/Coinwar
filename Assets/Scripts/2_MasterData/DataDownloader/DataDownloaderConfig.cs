@@ -15,26 +15,26 @@ namespace StockGame.Editor.Scripts.DataDownloaders
         public string spreadSheetUrl;
 
         [Header("Sheet List")]
-        [Tooltip("´Ù¿î·ÎµåÇÒ ½ÃÆ® ¼³Á¤ ¸ñ·Ï")]
+        [Tooltip("ë‹¤ìš´ë¡œë“œí•  ì‹œíŠ¸ ì„¤ì • ëª©ë¡")]
         public List<SheetConfig> sheets = new List<SheetConfig>();
 
-        // ¦¡¦¡ Helpers ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+        // â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
         /// <summary>
-        /// Æ¯Á¤ SheetConfigÀÇ ´Ù¿î·Îµå URLÀ» Á¶ÇÕÇÏ¿© ¹İÈ¯ÇÕ´Ï´Ù.
-        /// Çü½Ä: {baseUrl}?format={tsv|csv}&gid={sheetId}&range={range}
+        /// íŠ¹ì • SheetConfigì˜ ë‹¤ìš´ë¡œë“œ URLì„ ì¡°í•©í•˜ì—¬ ë°˜í™˜í•©ë‹ˆë‹¤.
+        /// í˜•ì‹: {baseUrl}?format={tsv|csv}&gid={sheetId}&range={range}
         /// </summary>
         public string BuildDownloadUrl(SheetConfig sheet)
         {
             if (string.IsNullOrEmpty(spreadSheetUrl))
             {
-                Debug.LogError($"[DataDownloaderConfig] '{name}' ÀÇ SpreadSheet URLÀÌ ºñ¾îÀÖ½À´Ï´Ù.");
+                Debug.LogError($"[DataDownloaderConfig] '{name}' ì˜ SpreadSheet URLì´ ë¹„ì–´ìˆìŠµë‹ˆë‹¤.");
                 return string.Empty;
             }
 
             if (sheet == null)
             {
-                Debug.LogError($"[DataDownloaderConfig] '{name}' ¿¡ Àü´ŞµÈ SheetConfig°¡ nullÀÔ´Ï´Ù.");
+                Debug.LogError($"[DataDownloaderConfig] '{name}' ì— ì „ë‹¬ëœ SheetConfigê°€ nullì…ë‹ˆë‹¤.");
                 return string.Empty;
             }
 

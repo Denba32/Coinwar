@@ -20,15 +20,15 @@ namespace StockGame.Scripts.UI.Missions
     }
     public class UIDragItem : MonoBehaviour, IDragItem, IDropItem
     {
-        [Header("Drag »óÈ£ÀÛ¿ë ¹üÀ§")]
+        [Header("Drag ìƒí˜¸ì‘ìš© ë²”ìœ„")]
         [SerializeField] private RectTransform rect;
 
         [Space]
-        [Header("Drag ÇÒ ¼ö ÀÖ´Â ¹üÀ§")]
+        [Header("Drag í•  ìˆ˜ ìˆëŠ” ë²”ìœ„")]
         [SerializeField] private RectTransform draggableBoundary;
 
         [Space]
-        [Header("Slot¿¡ ÀÎ½ÄµÇ´Â ¹üÀ§")]
+        [Header("Slotì— ì¸ì‹ë˜ëŠ” ë²”ìœ„")]
         [SerializeField] private RectTransform bounds;
         [SerializeField] private Canvas canvas;
         [SerializeField] private CanvasGroup group;
@@ -37,10 +37,10 @@ namespace StockGame.Scripts.UI.Missions
         [SerializeField] private Image dragItemImage;
 
         private bool isDragable = true;
-        private Vector2 rawDragPosition; // Å¬·¥ÇÁµÇÁö ¾ÊÀº ½ÇÁ¦ µå·¡±× À§Ä¡ (Ä¿¼­ ÃßÀû¿ë)
+        private Vector2 rawDragPosition; // í´ë¨í”„ë˜ì§€ ì•Šì€ ì‹¤ì œ ë“œë˜ê·¸ ìœ„ì¹˜ (ì»¤ì„œ ì¶”ì ìš©)
 
         [Space]
-        [Header("Drag ¹øÈ£ - Slot°ú ¸ÅÄ¡µÇ´Â Id¸¦ ¼³Á¤")]
+        [Header("Drag ë²ˆí˜¸ - Slotê³¼ ë§¤ì¹˜ë˜ëŠ” Idë¥¼ ì„¤ì •")]
         [SerializeField] private int id;
         public int Id => id;
         public RectTransform Bounds => bounds;
@@ -70,15 +70,15 @@ namespace StockGame.Scripts.UI.Missions
             startParent = transform.parent;
             transform.SetParent(canvas.transform);
             group.blocksRaycasts = false;
-            rawDragPosition = rect.anchoredPosition; // µå·¡±× ½ÃÀÛ ½ÃÁ¡ À§Ä¡·Î ÃÊ±âÈ­
+            rawDragPosition = rect.anchoredPosition; // ë“œë˜ê·¸ ì‹œì‘ ì‹œì  ìœ„ì¹˜ë¡œ ì´ˆê¸°í™”
             UIManager.Instance.SetDrag(this);
         }
 
         public void OnDrag(PointerEventData eventData)
         {
             if (!isDragable) return;
-            rawDragPosition += eventData.delta / canvas.scaleFactor; // Å¬·¥ÇÁ ¾øÀÌ Ä¿¼­ ¿òÁ÷ÀÓ ±×´ë·Î ´©Àû
-            rect.anchoredPosition = ClampToCanvas(rawDragPosition);   // È­¸é¿¡ º¸¿©ÁÙ ¶§¸¸ Å¬·¥ÇÁ
+            rawDragPosition += eventData.delta / canvas.scaleFactor; // í´ë¨í”„ ì—†ì´ ì»¤ì„œ ì›€ì§ì„ ê·¸ëŒ€ë¡œ ëˆ„ì 
+            rect.anchoredPosition = ClampToCanvas(rawDragPosition);   // í™”ë©´ì— ë³´ì—¬ì¤„ ë•Œë§Œ í´ë¨í”„
         }
 
         public void OnEndDrag(PointerEventData eventData)

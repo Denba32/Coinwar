@@ -41,18 +41,18 @@ namespace StockGame.Scripts.UI.Chat
         {
             ChatManager.Instance.SetChatPanelContent(scrollRectChat.content);
 
-            // ¹öÆ°
+            // ë²„íŠ¼
             closeChatButton.OnClickAsObservableFirst()?.Subscribe(CloseChat).AddTo(_disposables);
             openChatButton?.OnClickAsObservableFirst()?.Subscribe(OpenChat).AddTo(_disposables);
 
             InputManager.Instance.OnSubmit.Subscribe(HandleSubmit).AddTo(_disposables);
 
-            // TMP ÀÌº¥Æ®
+            // TMP ì´ë²¤íŠ¸
             chatInputField.OnSelectAsObservable().Subscribe(OnInputSelected).AddTo(_disposables);
             chatInputField.OnDeselectAsObservable().Subscribe(OnInputDeselected).AddTo(_disposables);
             chatInputField.OnEndEditAsObservable().Subscribe(OnEndEdit).AddTo(_disposables);
 
-            // Ã¤ÆÃ ¼ö½Å ±¸µ¶
+            // ì±„íŒ… ìˆ˜ì‹  êµ¬ë…
             Chat.OnMessageReceived
                 .Subscribe(AppendChatMessage)
                 .AddTo(_disposables);

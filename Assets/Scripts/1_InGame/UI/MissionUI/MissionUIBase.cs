@@ -65,7 +65,7 @@ namespace StockGame.Scripts.UI.Missions
 
             if (mission == null)
             {
-                Debug.LogWarning($"{gameObject.name} : Mission Data°¡ ¾ø½À´Ï´Ù");
+                Debug.LogWarning($"{gameObject.name} : Mission Dataê°€ ì—†ìŠµë‹ˆë‹¤");
             }
         }
         public override async UniTask OnClose(params object[] args)
@@ -175,7 +175,7 @@ namespace StockGame.Scripts.UI.Missions
             catch (OperationCanceledException) { }
             catch (Exception ex)
             {
-                Debug.LogError($"[{gameObject?.name}] ShowJudgeText ¿¹¿Ü | {ex.Message}");
+                Debug.LogError($"[{gameObject?.name}] ShowJudgeText ì˜ˆì™¸ | {ex.Message}");
             }
         }
 

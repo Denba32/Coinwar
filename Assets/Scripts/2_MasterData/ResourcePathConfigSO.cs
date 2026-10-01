@@ -25,18 +25,18 @@ namespace StockGame.Scripts.Datas
                 if (target == null) continue;
 
                 // Assets/.../Resources/Xxx/Yyy.prefab
-                // ¡æ Xxx/Yyy
+                // â†’ Xxx/Yyy
                 var fullPath = AssetDatabase.GetAssetPath(target);
                 const string resourcesFolder = "/Resources/";
                 var idx = fullPath.IndexOf(resourcesFolder);
 
                 if (idx < 0)
                 {
-                    Debug.LogWarning($"[ResourcePathConfigSO] Resources Æú´õ ¿ÜºÎ ¿¡¼Â: {fullPath}");
+                    Debug.LogWarning($"[ResourcePathConfigSO] Resources í´ë” ì™¸ë¶€ ì—ì…‹: {fullPath}");
                     continue;
                 }
 
-                // Resources/ ÀÌÈÄ °æ·Î¿¡¼­ È®ÀåÀÚ Á¦°Å
+                // Resources/ ì´í›„ ê²½ë¡œì—ì„œ í™•ìž¥ìž ì œê±°
                 var resourcePath = fullPath.Substring(idx + resourcesFolder.Length);
                 resourcePath = System.IO.Path.ChangeExtension(resourcePath, null);
 

@@ -17,10 +17,10 @@ namespace StockGame.Scripts.UI.Missions
 
         [SerializeField] private int maxKeyCount = 4;
 
-        [Header("Å°ÆÐµå ¹öÆ°")]
+        [Header("í‚¤íŒ¨ë“œ ë²„íŠ¼")]
         [SerializeField] private List<KeyPadButtonUI> padButtons = new();
 
-        [Header("ÀÔ·ÂÇÑ Å°")]
+        [Header("ìž…ë ¥í•œ í‚¤")]
         [SerializeField] private KeyPadInputNumber keyPadInputNumberPrefab;
 
         [SerializeField] private RectTransform keyPadInputBlocker;

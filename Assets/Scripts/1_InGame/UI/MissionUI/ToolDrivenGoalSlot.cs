@@ -9,10 +9,10 @@ namespace StockGame.Scripts.UI.Missions
     public sealed class ToolDrivenGoalSlot : MonoBehaviour
     {
         private const string MOVABLE = "Movable";
-        [Header("°¡Á®¿Í¾ß ÇÏ´Â ¿ÀºêÁ§Æ® È½¼ö")]
+        [Header("ê°€ì ¸ì™€ì•¼ í•˜ëŠ” ì˜¤ë¸Œì íŠ¸ íšŸìˆ˜")]
         [SerializeField] private int requiredDrivenCount = 2;
 
-        [Header("¿ÀºêÁ§Æ®°¡ ¹üÀ§ ¾È¿¡ µé¾î¿ÔÀ» ¶§, ÇØ´ç ´ë»óÀ» ·£´ıÇÑ À§Ä¡¿¡ ÀÌµ¿½ÃÅ³ ¿µ¿ª")]
+        [Header("ì˜¤ë¸Œì íŠ¸ê°€ ë²”ìœ„ ì•ˆì— ë“¤ì–´ì™”ì„ ë•Œ, í•´ë‹¹ ëŒ€ìƒì„ ëœë¤í•œ ìœ„ì¹˜ì— ì´ë™ì‹œí‚¬ ì˜ì—­")]
         [SerializeField] private RectTransform randomBounds;
         private int currentDrivenCount;
 

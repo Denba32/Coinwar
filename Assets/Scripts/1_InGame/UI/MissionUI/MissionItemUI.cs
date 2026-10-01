@@ -21,7 +21,7 @@ namespace StockGame.Scripts.UI.Missions
             
         public void OnCompleteMission(Mission mission)
         {
-            Debug.Log($"{mission.MissionName} πÃº« ≈¨∏ÆæÓ"); 
+            Debug.Log($"{mission.MissionName} ÎØ∏ÏÖò ÌÅ¥Î¶¨Ïñ¥"); 
             missionDescriptionText.fontStyle = FontStyles.Strikethrough;
             missionDescriptionText.color = completedMissionColor;
         }

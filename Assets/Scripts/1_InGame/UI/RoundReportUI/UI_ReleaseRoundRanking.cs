@@ -23,7 +23,7 @@ namespace StockGame.Scripts.UI.RoundReport
             foreach (var info in infos)
             {
                 var row = Instantiate<UI_RankingRow>(rankingRowPrefab, cellContent);
-                // RoundScore: ÀÌ¹ø ¶ó¿îµå Ãß°¡ Á¡¼ö¸¸ Ç¥½Ã
+                // RoundScore: ì´ë²ˆ ë¼ìš´ë“œ ì¶”ê°€ ì ìˆ˜ë§Œ í‘œì‹œ
                 row?.UpdateData(info.Ranking, info.Nickname, info.GetRankingProfile(), info.Profit);
                 rankingRows?.Add(row);
             }

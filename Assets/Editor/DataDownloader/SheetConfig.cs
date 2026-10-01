@@ -11,22 +11,22 @@ namespace StockGame.Editor.Scripts.DataDownloaders
     [CreateAssetMenu(fileName = "SheetConfig", menuName = "SpreadSheet/SheetConfig")]
     public class SheetConfig : ScriptableObject
     {
-        [Tooltip("Google SpreadSheetÀÇ ½ÃÆ® GID\nex) 0, 123456789")]
+        [Tooltip("Google SpreadSheetì˜ ì‹œíŠ¸ GID\nex) 0, 123456789")]
         public string sheetId;
 
-        [Tooltip("´Ù¿î·ÎµåÇÒ ¼¿ ¹üÀ§ (A1 Ç¥±â¹ı)\nex) A1:Z100  /  ºñ¿öµÎ¸é ½ÃÆ® ÀüÃ¼ ´Ù¿î·Îµå")]
+        [Tooltip("ë‹¤ìš´ë¡œë“œí•  ì…€ ë²”ìœ„ (A1 í‘œê¸°ë²•)\nex) A1:Z100  /  ë¹„ì›Œë‘ë©´ ì‹œíŠ¸ ì „ì²´ ë‹¤ìš´ë¡œë“œ")]
         public string range;
 
-        [Tooltip("´Ù¿î·Îµå ÆÄÀÏ Æ÷¸Ë")]
+        [Tooltip("ë‹¤ìš´ë¡œë“œ íŒŒì¼ í¬ë§·")]
         public DownloadFormat downloadFormat = DownloadFormat.TSV;
 
-        [Tooltip("ÀúÀåµÉ ÆÄÀÏ ÀÌ¸§ (È®ÀåÀÚ Á¦¿Ü)\nex) ItemData, StageData")]
+        [Tooltip("ì €ì¥ë  íŒŒì¼ ì´ë¦„ (í™•ì¥ì ì œì™¸)\nex) ItemData, StageData")]
         public string fileName = "DownloadedData";
 
-        [Tooltip("ÀúÀåµÉ Æú´õ¸¦ Project Ã¢¿¡¼­ µå·¡±×ÇÏ¿© ÁöÁ¤ÇÏ¼¼¿ä.")]
+        [Tooltip("ì €ì¥ë  í´ë”ë¥¼ Project ì°½ì—ì„œ ë“œë˜ê·¸í•˜ì—¬ ì§€ì •í•˜ì„¸ìš”.")]
         public Object saveFolder;
 
-        // ¦¡¦¡ Helpers ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+        // â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
         public string GetFileExtension()
             => downloadFormat == DownloadFormat.TSV ? ".tsv" : ".csv";
@@ -36,20 +36,20 @@ namespace StockGame.Editor.Scripts.DataDownloaders
 
 #if UNITY_EDITOR
         /// <summary>
-        /// saveFolder ¿ÀºêÁ§Æ®·ÎºÎÅÍ AssetDatabase¸¦ ÅëÇØ Àı´ë °æ·Î¸¦ ¹İÈ¯ÇÕ´Ï´Ù.
+        /// saveFolder ì˜¤ë¸Œì íŠ¸ë¡œë¶€í„° AssetDatabaseë¥¼ í†µí•´ ì ˆëŒ€ ê²½ë¡œë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.
         /// </summary>
         public string GetFullSavePath()
         {
             if (saveFolder == null)
             {
-                Debug.LogError($"[SheetConfig] '{name}' ÀÇ saveFolder°¡ ºñ¾îÀÖ½À´Ï´Ù.");
+                Debug.LogError($"[SheetConfig] '{name}' ì˜ saveFolderê°€ ë¹„ì–´ìˆìŠµë‹ˆë‹¤.");
                 return string.Empty;
             }
 
             string assetPath = AssetDatabase.GetAssetPath(saveFolder);
             if (string.IsNullOrEmpty(assetPath))
             {
-                Debug.LogError($"[SheetConfig] '{name}' ÀÇ saveFolder °æ·Î¸¦ AssetDatabase¿¡¼­ Ã£À» ¼ö ¾ø½À´Ï´Ù.");
+                Debug.LogError($"[SheetConfig] '{name}' ì˜ saveFolder ê²½ë¡œë¥¼ AssetDatabaseì—ì„œ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
                 return string.Empty;
             }
 
@@ -59,13 +59,13 @@ namespace StockGame.Editor.Scripts.DataDownloaders
             return System.IO.Path.Combine(absoluteFolderPath, fileName + GetFileExtension());
         }
 
-        /// <summary>Inspector / EditorWindow Ç¥½Ã¿ë (Assets/... ÇüÅÂ)</summary>
+        /// <summary>Inspector / EditorWindow í‘œì‹œìš© (Assets/... í˜•íƒœ)</summary>
         public string GetAssetRelativeSavePath()
         {
-            if (saveFolder == null) return "(Æú´õ ¹ÌÁöÁ¤)";
+            if (saveFolder == null) return "(í´ë” ë¯¸ì§€ì •)";
             string assetPath = AssetDatabase.GetAssetPath(saveFolder);
             return string.IsNullOrEmpty(assetPath)
-                ? "(°æ·Î ¾øÀ½)"
+                ? "(ê²½ë¡œ ì—†ìŒ)"
                 : $"{assetPath}/{fileName}{GetFileExtension()}";
         }
 #endif

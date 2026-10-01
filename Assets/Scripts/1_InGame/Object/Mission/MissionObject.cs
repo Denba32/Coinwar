@@ -105,10 +105,10 @@ public class MissionObject : MonoBehaviour, IInteractable, IHighlightable
     {
         if (mission.MissionId != missionId)
         {
-            Debug.Log("Mission Object : ¹Ì¼Ç ¸®¼ÂÀÌ ºÒ°¡´ÉÇÑ ¿ÀºêÁ§Æ® : Id°¡ Æ²¸²");
+            Debug.Log("Mission Object : ë¯¸ì…˜ ë¦¬ì…‹ì´ ë¶ˆê°€ëŠ¥í•œ ì˜¤ë¸Œì íŠ¸ : Idê°€ í‹€ë¦¼");
             return;
         }
-        Debug.Log("Mission Object : ¹Ì¼Ç ¿ÀºêÁ§Æ® ¸®¼Â : Id°¡ ¸ÂÀ½");
+        Debug.Log("Mission Object : ë¯¸ì…˜ ì˜¤ë¸Œì íŠ¸ ë¦¬ì…‹ : Idê°€ ë§ìŒ");
         locked = false;
     }
 
@@ -116,7 +116,7 @@ public class MissionObject : MonoBehaviour, IInteractable, IHighlightable
     {
         if (mission.MissionId != missionId)
         {
-            Debug.Log("Mission Object : ¹Ì¼Ç Å¬¸®¾î°¡ ºÒ°¡´ÉÇÑ ¿ÀºêÁ§Æ® : Id°¡ Æ²¸²");
+            Debug.Log("Mission Object : ë¯¸ì…˜ í´ë¦¬ì–´ê°€ ë¶ˆê°€ëŠ¥í•œ ì˜¤ë¸Œì íŠ¸ : Idê°€ í‹€ë¦¼");
             return;
         }
         locked = true;

@@ -10,17 +10,17 @@ namespace StockGame.Editor.Scripts.DataDownloaders
 {
     public class SpreadSheetDownloaderWindow : EditorWindow
     {
-        // ¦¡¦¡ State ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+        // â”€â”€ State â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
         private DataDownloaderConfig _config;
 
-        // key: SheetConfig, value: Ã¼Å© ¿©ºÎ
+        // key: SheetConfig, value: ì²´í¬ ì—¬ë¶€
         private readonly Dictionary<SheetConfig, bool> _checkMap = new Dictionary<SheetConfig, bool>();
 
         private Vector2 _scrollPos;
         private bool _isDownloading;
 
-        // ¦¡¦¡ Menu Items ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+        // â”€â”€ Menu Items â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
         [MenuItem("Tools/SpreadSheet/Download Manager")]
         public static void OpenWindow()
@@ -30,11 +30,11 @@ namespace StockGame.Editor.Scripts.DataDownloaders
             window.Show();
         }
 
-        // ¦¡¦¡ Lifecycle ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+        // â”€â”€ Lifecycle â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
         private void OnEnable()
         {
-            // ¸¶Áö¸·À¸·Î »ç¿ëÇÑ Config¸¦ EditorPrefs¿¡¼­ º¹¿ø
+            // ë§ˆì§€ë§‰ìœ¼ë¡œ ì‚¬ìš©í•œ Configë¥¼ EditorPrefsì—ì„œ ë³µì›
             string savedGuid = EditorPrefs.GetString("SpreadSheetDownloader_ConfigGuid", string.Empty);
             if (!string.IsNullOrEmpty(savedGuid))
             {
@@ -44,7 +44,7 @@ namespace StockGame.Editor.Scripts.DataDownloaders
             }
         }
 
-        // ¦¡¦¡ GUI ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+        // â”€â”€ GUI â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
         private void OnGUI()
         {
@@ -54,7 +54,7 @@ namespace StockGame.Editor.Scripts.DataDownloaders
 
             if (_config == null)
             {
-                EditorGUILayout.HelpBox("DataDownloaderConfig ¿¡¼ÂÀ» À§ ½½·Ô¿¡ ¿¬°áÇØÁÖ¼¼¿ä.", MessageType.Info);
+                EditorGUILayout.HelpBox("DataDownloaderConfig ì—ì…‹ì„ ìœ„ ìŠ¬ë¡¯ì— ì—°ê²°í•´ì£¼ì„¸ìš”.", MessageType.Info);
                 return;
             }
 
@@ -65,11 +65,11 @@ namespace StockGame.Editor.Scripts.DataDownloaders
             if (_isDownloading)
             {
                 GUILayout.Space(4);
-                EditorGUILayout.HelpBox("´Ù¿î·Îµå Áß...", MessageType.None);
+                EditorGUILayout.HelpBox("ë‹¤ìš´ë¡œë“œ ì¤‘...", MessageType.None);
             }
         }
 
-        // ¦¡¦¡ Config Selector ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+        // â”€â”€ Config Selector â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
         private void DrawConfigSelector()
         {
@@ -91,29 +91,29 @@ namespace StockGame.Editor.Scripts.DataDownloaders
             if (_config != null)
             {
                 EditorGUILayout.LabelField(
-                    $"URL: {(string.IsNullOrEmpty(_config.spreadSheetUrl) ? "(¹ÌÀÔ·Â)" : _config.spreadSheetUrl)}",
+                    $"URL: {(string.IsNullOrEmpty(_config.spreadSheetUrl) ? "(ë¯¸ì…ë ¥)" : _config.spreadSheetUrl)}",
                     EditorStyles.miniLabel);
             }
         }
 
-        // ¦¡¦¡ Sheet List ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+        // â”€â”€ Sheet List â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
         private void DrawSheetList()
         {
             if (_config.sheets == null || _config.sheets.Count == 0)
             {
-                EditorGUILayout.HelpBox("Config¿¡ SheetConfig°¡ ¾ø½À´Ï´Ù.\nInspector¿¡¼­ sheets ¸®½ºÆ®¸¦ Ã¤¿öÁÖ¼¼¿ä.", MessageType.Warning);
+                EditorGUILayout.HelpBox("Configì— SheetConfigê°€ ì—†ìŠµë‹ˆë‹¤.\nInspectorì—ì„œ sheets ë¦¬ìŠ¤íŠ¸ë¥¼ ì±„ì›Œì£¼ì„¸ìš”.", MessageType.Warning);
                 return;
             }
 
-            // ÀüÃ¼ ¼±ÅÃ / ÇØÁ¦
+            // ì „ì²´ ì„ íƒ / í•´ì œ
             using (new EditorGUILayout.HorizontalScope())
             {
-                EditorGUILayout.LabelField("´Ù¿î·ÎµåÇÒ ½ÃÆ® ¼±ÅÃ", EditorStyles.boldLabel);
+                EditorGUILayout.LabelField("ë‹¤ìš´ë¡œë“œí•  ì‹œíŠ¸ ì„ íƒ", EditorStyles.boldLabel);
                 GUILayout.FlexibleSpace();
-                if (GUILayout.Button("ÀüÃ¼ ¼±ÅÃ", EditorStyles.miniButton, GUILayout.Width(60)))
+                if (GUILayout.Button("ì „ì²´ ì„ íƒ", EditorStyles.miniButton, GUILayout.Width(60)))
                     SetAllChecks(true);
-                if (GUILayout.Button("ÀüÃ¼ ÇØÁ¦", EditorStyles.miniButton, GUILayout.Width(60)))
+                if (GUILayout.Button("ì „ì²´ í•´ì œ", EditorStyles.miniButton, GUILayout.Width(60)))
                     SetAllChecks(false);
             }
 
@@ -125,7 +125,7 @@ namespace StockGame.Editor.Scripts.DataDownloaders
                 var sheet = _config.sheets[i];
                 if (sheet == null)
                 {
-                    EditorGUILayout.HelpBox($"[{i}] SheetConfig°¡ nullÀÔ´Ï´Ù.", MessageType.Warning);
+                    EditorGUILayout.HelpBox($"[{i}] SheetConfigê°€ nullì…ë‹ˆë‹¤.", MessageType.Warning);
                     continue;
                 }
 
@@ -145,32 +145,32 @@ namespace StockGame.Editor.Scripts.DataDownloaders
 
             using (new EditorGUILayout.HorizontalScope())
             {
-                // Ã¼Å©¹Ú½º
+                // ì²´í¬ë°•ìŠ¤
                 _checkMap[sheet] = EditorGUILayout.Toggle(_checkMap[sheet], GUILayout.Width(18));
 
-                // ÀÌ¸§
+                // ì´ë¦„
                 EditorGUILayout.LabelField($"[{index}]  {sheet.name}", EditorStyles.boldLabel);
 
                 GUILayout.FlexibleSpace();
 
-                // Áï½Ã ´Ù¿î·Îµå ¹öÆ°
+                // ì¦‰ì‹œ ë‹¤ìš´ë¡œë“œ ë²„íŠ¼
                 GUI.enabled = !_isDownloading;
-                if (GUILayout.Button("´Ù¿î·Îµå", EditorStyles.miniButton, GUILayout.Width(65)))
+                if (GUILayout.Button("ë‹¤ìš´ë¡œë“œ", EditorStyles.miniButton, GUILayout.Width(65)))
                     _ = DownloadSheetsAsync(new List<SheetConfig> { sheet });
                 GUI.enabled = true;
             }
 
-            // »ó¼¼ Á¤º¸
+            // ìƒì„¸ ì •ë³´
             string savePath = sheet.GetAssetRelativeSavePath();
-            string gid = string.IsNullOrEmpty(sheet.sheetId) ? "(ÀüÃ¼)" : sheet.sheetId;
-            string range = string.IsNullOrEmpty(sheet.range) ? "(ÀüÃ¼)" : sheet.range;
+            string gid = string.IsNullOrEmpty(sheet.sheetId) ? "(ì „ì²´)" : sheet.sheetId;
+            string range = string.IsNullOrEmpty(sheet.range) ? "(ì „ì²´)" : sheet.range;
 
             EditorGUILayout.LabelField(
-                $"GID: {gid}   Range: {range}   Format: {sheet.downloadFormat}   ÀúÀå: {savePath}",
+                $"GID: {gid}   Range: {range}   Format: {sheet.downloadFormat}   ì €ì¥: {savePath}",
                 EditorStyles.miniLabel);
         }
 
-        // ¦¡¦¡ Bottom Buttons ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+        // â”€â”€ Bottom Buttons â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
         private void DrawBottomButtons()
         {
@@ -179,13 +179,13 @@ namespace StockGame.Editor.Scripts.DataDownloaders
             using (new EditorGUILayout.HorizontalScope())
             {
                 GUI.enabled = !_isDownloading && checkedCount > 0;
-                if (GUILayout.Button($"¡å  ¼±ÅÃ ´Ù¿î·Îµå  ({checkedCount}°³)", GUILayout.Height(30)))
+                if (GUILayout.Button($"â–¼  ì„ íƒ ë‹¤ìš´ë¡œë“œ  ({checkedCount}ê°œ)", GUILayout.Height(30)))
                     _ = DownloadCheckedAsync();
                 GUI.enabled = true;
             }
         }
 
-        // ¦¡¦¡ Helpers ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+        // â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
         private void SetConfig(DataDownloaderConfig config)
         {
@@ -227,7 +227,7 @@ namespace StockGame.Editor.Scripts.DataDownloaders
             return count;
         }
 
-        // ¦¡¦¡ Download ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+        // â”€â”€ Download â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
         private async Task DownloadCheckedAsync()
         {
@@ -253,7 +253,7 @@ namespace StockGame.Editor.Scripts.DataDownloaders
 
                 EditorUtility.DisplayProgressBar(
                     "SpreadSheet Downloader",
-                    $"´Ù¿î·Îµå Áß: {sheet.name}  ({i + 1} / {targets.Count})",
+                    $"ë‹¤ìš´ë¡œë“œ ì¤‘: {sheet.name}  ({i + 1} / {targets.Count})",
                     (float)(i + 1) / targets.Count);
 
                 bool ok = await DownloadSheetAsync(_config, sheet);
@@ -268,16 +268,16 @@ namespace StockGame.Editor.Scripts.DataDownloaders
 
             string msg = targets.Count == 1
                 ? (success == 1
-                    ? $"[{targets[0].name}] ´Ù¿î·Îµå ¿Ï·á!\n{targets[0].GetAssetRelativeSavePath()}"
-                    : $"[{targets[0].name}] ´Ù¿î·Îµå ½ÇÆĞ.")
-                : $"¼º°ø: {success}°³  /  ½ÇÆĞ: {fail}°³";
+                    ? $"[{targets[0].name}] ë‹¤ìš´ë¡œë“œ ì™„ë£Œ!\n{targets[0].GetAssetRelativeSavePath()}"
+                    : $"[{targets[0].name}] ë‹¤ìš´ë¡œë“œ ì‹¤íŒ¨.")
+                : $"ì„±ê³µ: {success}ê°œ  /  ì‹¤íŒ¨: {fail}ê°œ";
 
             EditorUtility.DisplayDialog(
-                targets.Count == 1 ? (success == 1 ? "¿Ï·á" : "½ÇÆĞ") : "ÀÏ°ı ´Ù¿î·Îµå ¿Ï·á",
-                msg, "È®ÀÎ");
+                targets.Count == 1 ? (success == 1 ? "ì™„ë£Œ" : "ì‹¤íŒ¨") : "ì¼ê´„ ë‹¤ìš´ë¡œë“œ ì™„ë£Œ",
+                msg, "í™•ì¸");
         }
 
-        /// <summary>´ÜÀÏ ½ÃÆ®¸¦ ´Ù¿î·ÎµåÇÏ¿© ÁöÁ¤ °æ·Î¿¡ ÀúÀå(µ¤¾î¾²±â)ÇÕ´Ï´Ù.</summary>
+        /// <summary>ë‹¨ì¼ ì‹œíŠ¸ë¥¼ ë‹¤ìš´ë¡œë“œí•˜ì—¬ ì§€ì • ê²½ë¡œì— ì €ì¥(ë®ì–´ì“°ê¸°)í•©ë‹ˆë‹¤.</summary>
         private static async UniTask<bool> DownloadSheetAsync(DataDownloaderConfig config, SheetConfig sheet)
         {
             string url = config.BuildDownloadUrl(sheet);
@@ -291,31 +291,31 @@ namespace StockGame.Editor.Scripts.DataDownloaders
                 using var client = new HttpClient();
                 client.Timeout = System.TimeSpan.FromSeconds(30);
 
-                Debug.Log($"[SpreadSheetDownloader] ´Ù¿î·Îµå ½ÃÀÛ: {sheet.name}\nURL: {url}");
+                Debug.Log($"[SpreadSheetDownloader] ë‹¤ìš´ë¡œë“œ ì‹œì‘: {sheet.name}\nURL: {url}");
 
                 string content = await client.GetStringAsync(url);
 
-                // Æú´õ ¾øÀ¸¸é »ı¼º
+                // í´ë” ì—†ìœ¼ë©´ ìƒì„±
                 string dir = Path.GetDirectoryName(fullPath);
                 if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
                     Directory.CreateDirectory(dir);
 
-                // µ¤¾î¾²±â
+                // ë®ì–´ì“°ê¸°
                 await File.WriteAllTextAsync(fullPath, content, System.Text.Encoding.UTF8);
 
-                Debug.Log($"[SpreadSheetDownloader] ÀúÀå ¿Ï·á: {fullPath}");
+                Debug.Log($"[SpreadSheetDownloader] ì €ì¥ ì™„ë£Œ: {fullPath}");
                 return true;
             }
             catch (HttpRequestException e)
             {
-                Debug.LogError($"[SpreadSheetDownloader] HTTP ¿À·ù [{sheet.name}]: {e.Message}");
-                EditorUtility.DisplayDialog("´Ù¿î·Îµå ½ÇÆĞ", $"[{sheet.name}]\nHTTP ¿À·ù: {e.Message}", "È®ÀÎ");
+                Debug.LogError($"[SpreadSheetDownloader] HTTP ì˜¤ë¥˜ [{sheet.name}]: {e.Message}");
+                EditorUtility.DisplayDialog("ë‹¤ìš´ë¡œë“œ ì‹¤íŒ¨", $"[{sheet.name}]\nHTTP ì˜¤ë¥˜: {e.Message}", "í™•ì¸");
                 return false;
             }
             catch (System.Exception e)
             {
-                Debug.LogError($"[SpreadSheetDownloader] ¿À·ù [{sheet.name}]: {e.Message}");
-                EditorUtility.DisplayDialog("´Ù¿î·Îµå ½ÇÆĞ", $"[{sheet.name}]\n{e.Message}", "È®ÀÎ");
+                Debug.LogError($"[SpreadSheetDownloader] ì˜¤ë¥˜ [{sheet.name}]: {e.Message}");
+                EditorUtility.DisplayDialog("ë‹¤ìš´ë¡œë“œ ì‹¤íŒ¨", $"[{sheet.name}]\n{e.Message}", "í™•ì¸");
                 return false;
             }
         }

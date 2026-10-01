@@ -19,17 +19,17 @@ namespace StockGame.Scripts.UI
         [SerializeField] private BaseButton closeButton;
         public BaseButton CloseButton => closeButton;
 
-        [Header("Round º≥¡§")]
+        [Header("Round ÏÑ§Ï†ï")]
         [SerializeField] private Button roundPrevButton;
         [SerializeField] private Button roundNextButton;
         [SerializeField] private TMP_Text roundCountText;
 
-        [Header("πÃº« º≥¡§")]
+        [Header("ÎØ∏ÏÖò ÏÑ§Ï†ï")]
         [SerializeField] private Button missionPrevButton;
         [SerializeField] private Button missionNextButton;
         [SerializeField] private TMP_Text missionCountText;
 
-        [Header("Time º≥¡§")]
+        [Header("Time ÏÑ§Ï†ï")]
         [SerializeField] private Slider farmingSlider;
         [SerializeField] private TMP_Text farmingSliderText;
         [SerializeField] private LocalizeStringEvent farmingSliderStringEvent;
@@ -46,7 +46,7 @@ namespace StockGame.Scripts.UI
         [SerializeField] private TMP_Text rankingCheckTimeText;
         [SerializeField] private LocalizeStringEvent rankingCheckTimeStringEvent;
 
-        [Header("√÷¥Î «√∑π¿Ã ¿Œø¯ º≥¡§")]
+        [Header("ÏµúÎåÄ ÌîåÎ†àÏù¥ Ïù∏Ïõê ÏÑ§Ï†ï")]
         [SerializeField] private Button maxPlayerPrevButton;
         [SerializeField] private Button maxPlayerNextButton;
         [SerializeField] private TMP_Text maxPlayerCountText;

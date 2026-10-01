@@ -16,20 +16,20 @@ namespace StockGame.Scripts.UI.Missions
         [SerializeField] private Button lilButton;
 
         [Space]
-        [Header("¹Ì¼Ç ÁøÇà ½Ã°£")]
+        [Header("ë¯¸ì…˜ ì§„í–‰ ì‹œê°„")]
         [SerializeField] private float missionTime = 5f;
 
         [Space]
-        [Header("¸± ¼ÕÀâÀÌ")]
+        [Header("ë¦´ ì†ì¡ì´")]
         [SerializeField] private RectTransform handlePivot;
         [SerializeField] private Ease ease = Ease.Linear;
 
         [Space]
-        [Header("¸± °¨´Â È¸Àü ¼Óµµ : ¼öÄ¡°¡ ³·À» ¼ö·Ï ºü¸§")]
+        [Header("ë¦´ ê°ëŠ” íšŒì „ ì†ë„ : ìˆ˜ì¹˜ê°€ ë‚®ì„ ìˆ˜ë¡ ë¹ ë¦„")]
         [SerializeField] private float duration;
 
         [Space]
-        [Header("¿Ï·á Å¬¸¯ È½¼ö")]
+        [Header("ì™„ë£Œ í´ë¦­ íšŸìˆ˜")]
         [SerializeField] private int completedClickCount;
 
         private int currentClickCount = 0;

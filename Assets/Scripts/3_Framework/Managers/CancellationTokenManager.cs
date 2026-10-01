@@ -10,7 +10,7 @@ namespace StockGame.Scripts.Manager
         private readonly Dictionary<string, CancellationTokenSource> _ctsDictionary = new();
 
         /// <summary>
-        /// key¿¡ ÇØ´çÇÏ´Â Token ¹İÈ¯. ÀÌ¹Ì ÀÖÀ¸¸é Cancel ÈÄ »õ·Î »ı¼º.
+        /// keyì— í•´ë‹¹í•˜ëŠ” Token ë°˜í™˜. ì´ë¯¸ ìˆìœ¼ë©´ Cancel í›„ ìƒˆë¡œ ìƒì„±.
         /// </summary>
         public CancellationToken GetToken(object caller, string taskName = "default")
         {
@@ -28,7 +28,7 @@ namespace StockGame.Scripts.Manager
         }
 
         /// <summary>
-        /// key¿¡ ÇØ´çÇÏ´Â ÀÛ¾÷ Ãë¼Ò
+        /// keyì— í•´ë‹¹í•˜ëŠ” ì‘ì—… ì·¨ì†Œ
         /// </summary>
         public void Cancel(object caller, string taskName = "default")
         {
@@ -41,7 +41,7 @@ namespace StockGame.Scripts.Manager
         }
 
         /// <summary>
-        /// ÇØ´ç callerÀÇ ¸ğµç ÀÛ¾÷ Ãë¼Ò
+        /// í•´ë‹¹ callerì˜ ëª¨ë“  ì‘ì—… ì·¨ì†Œ
         /// </summary>
         public void CancelAll(object caller)
         {

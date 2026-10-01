@@ -74,7 +74,7 @@ namespace StockGame.Scripts.UI.Missions
             requirecPriceText.gameObject?.SetActive(false);
             interactBlocker.gameObject?.SetActive(false);
 
-            // Timer ½ÃÀÛ
+            // Timer ì‹œìž‘
             StartTimer(token).Forget();
         }
 

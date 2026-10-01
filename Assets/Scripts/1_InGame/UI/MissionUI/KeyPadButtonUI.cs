@@ -12,13 +12,13 @@ namespace StockGame.Scripts.UI.Missions
         private const string PRESS_DOWN = "Pressed";
         private const string PRESS_UP = "Normal";
         private IDisposable onClickButton;
-        [Header("¹öÆ°")]
+        [Header("ë²„íŠ¼")]
         [SerializeField] private Button button;
 
-        [Header("¾Ö´Ï¸ŞÀÌÅÍ")]
+        [Header("ì• ë‹ˆë©”ì´í„°")]
         [SerializeField] private Animator animator;
 
-        [Header("ÀÎ½ÄÇÏ´Â KeypadÀÇ ¼ıÀÚ")]
+        [Header("ì¸ì‹í•˜ëŠ” Keypadì˜ ìˆ«ì")]
         [SerializeField] private int index;
         public int KeyNumber => index;
 

@@ -12,7 +12,7 @@ namespace StockGame.Scripts.Objects.Missions
 
         private void Awake()
         {
-            // �θ𿡼� SpriteRenderer �ڵ� Ž��
+            // 부모에서 SpriteRenderer 자동 탐색
             targetRenderer = GetComponentInParent<SpriteRenderer>();
         }
 

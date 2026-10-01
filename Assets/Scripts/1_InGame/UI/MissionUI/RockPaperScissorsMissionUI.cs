@@ -10,9 +10,9 @@ namespace StockGame.Scripts.UI.Missions
 {
     public enum RockPaperScissors
     {
-        Scissors = 0, // ºü
-        Rock = 1, // ¹¬
-        Paper = 2, // Âî
+        Scissors = 0, // ë¹ 
+        Rock = 1, // ë¬µ
+        Paper = 2, // ì°Œ
     }
 
     public class RockPaperScissorsMissionUI : MissionUIBase
@@ -55,7 +55,7 @@ namespace StockGame.Scripts.UI.Missions
 
         private void Press(RockPaperScissors value)
         {
-            // ¹öÆ° Å¬¸¯ ÈÄ, ¸ğµç ¹öÆ° ºñÈ°¼ºÈ­
+            // ë²„íŠ¼ í´ë¦­ í›„, ëª¨ë“  ë²„íŠ¼ ë¹„í™œì„±í™”
             foreach(var button in buttons)
             {
                 button?.SetInteractable(false);
@@ -90,11 +90,11 @@ namespace StockGame.Scripts.UI.Missions
             await UniTask.WaitForSeconds(0.5f, cancellationToken:destroyCancellationToken);
             if (this == null || destroyCancellationToken.IsCancellationRequested) return;
 
-            if (resultValue == cpuValue) // ½Â¸®ÇÑ °æ¿ì
+            if (resultValue == cpuValue) // ìŠ¹ë¦¬í•œ ê²½ìš°
             {
                 Success();
             }
-            else // ½ÇÆĞÇÑ °æ¿ì
+            else // ì‹¤íŒ¨í•œ ê²½ìš°
             {
                 Failed();
             }

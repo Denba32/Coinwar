@@ -5,15 +5,15 @@ using UnityEngine;
 namespace StockGame.Utility
 {
     /// <summary>
-    /// TSV µ¥ÀÌÅÍÀÇ Å¸ÀÔ ÆÄ½ÌÀ» ´ã´çÇÕ´Ï´Ù.
-    /// »õ Å¸ÀÔ Ãß°¡ ½Ã ParseValue¿¡ case¸¦ Ãß°¡ÇÏ¼¼¿ä.
+    /// TSV ë°ì´í„°ì˜ íƒ€ì… íŒŒì‹±ì„ ë‹´ë‹¹í•©ë‹ˆë‹¤.
+    /// ìƒˆ íƒ€ì… ì¶”ê°€ ì‹œ ParseValueì— caseë¥¼ ì¶”ê°€í•˜ì„¸ìš”.
     /// </summary>
     public static class TsvParser
     {
         private const char ArraySeparator = ',';
 
         /// <summary>
-        /// TSV ¿øº» ÅØ½ºÆ®¸¦ ÆÄ½ÌÇÏ¿© Çà/¿­ 2Â÷¿ø ¹è¿­·Î ¹İÈ¯ÇÕ´Ï´Ù.
+        /// TSV ì›ë³¸ í…ìŠ¤íŠ¸ë¥¼ íŒŒì‹±í•˜ì—¬ í–‰/ì—´ 2ì°¨ì› ë°°ì—´ë¡œ ë°˜í™˜í•©ë‹ˆë‹¤.
         /// </summary>
         public static string[][] ParseLines(string tsvText)
         {
@@ -31,8 +31,8 @@ namespace StockGame.Utility
         }
 
         /// <summary>
-        /// Å¸ÀÔ ¹®ÀÚ¿­°ú ¿ø½Ã °ª ¹®ÀÚ¿­À» ¹Ş¾Æ object·Î º¯È¯ÇÕ´Ï´Ù.
-        /// Áö¿ø Å¸ÀÔ: int, float, string, bool, int[], float[], string[]
+        /// íƒ€ì… ë¬¸ìì—´ê³¼ ì›ì‹œ ê°’ ë¬¸ìì—´ì„ ë°›ì•„ objectë¡œ ë³€í™˜í•©ë‹ˆë‹¤.
+        /// ì§€ì› íƒ€ì…: int, float, string, bool, int[], float[], string[]
         /// </summary>
         public static object ParseValue(string typeStr, string rawValue)
         {
@@ -59,13 +59,13 @@ namespace StockGame.Utility
                     case "string[]":
                         return ParseArray(rawValue, s => (object)s);
                     default:
-                        Debug.LogWarning($"[TsvParser] ¾Ë ¼ö ¾ø´Â Å¸ÀÔ '{typeStr}', stringÀ¸·Î Ã³¸®ÇÕ´Ï´Ù.");
+                        Debug.LogWarning($"[TsvParser] ì•Œ ìˆ˜ ì—†ëŠ” íƒ€ì… '{typeStr}', stringìœ¼ë¡œ ì²˜ë¦¬í•©ë‹ˆë‹¤.");
                         return rawValue;
                 }
             }
             catch (Exception e)
             {
-                Debug.LogError($"[TsvParser] ÆÄ½Ì ½ÇÆĞ - Å¸ÀÔ: {typeStr}, °ª: '{rawValue}'\n{e.Message}");
+                Debug.LogError($"[TsvParser] íŒŒì‹± ì‹¤íŒ¨ - íƒ€ì…: {typeStr}, ê°’: '{rawValue}'\n{e.Message}");
                 return null;
             }
         }
@@ -81,14 +81,14 @@ namespace StockGame.Utility
         }
 
         /// <summary>
-        /// object¸¦ T·Î Ä³½ºÆÃÇÕ´Ï´Ù. ¹è¿­ Å¸ÀÔÀÇ °æ¿ì object[]¿¡¼­ T[]·Î º¯È¯ÇÕ´Ï´Ù.
+        /// objectë¥¼ Të¡œ ìºìŠ¤íŒ…í•©ë‹ˆë‹¤. ë°°ì—´ íƒ€ì…ì˜ ê²½ìš° object[]ì—ì„œ T[]ë¡œ ë³€í™˜í•©ë‹ˆë‹¤.
         /// </summary>
         public static T Cast<T>(object value)
         {
             if (value is T direct)
                 return direct;
 
-            // object[] ¡æ T[] º¯È¯ (int[], float[], string[] µî)
+            // object[] â†’ T[] ë³€í™˜ (int[], float[], string[] ë“±)
             if (value is object[] objArray && typeof(T).IsArray)
             {
                 var elementType = typeof(T).GetElementType();
@@ -97,7 +97,7 @@ namespace StockGame.Utility
                     typed.SetValue(Convert.ChangeType(objArray[i], elementType), i);
                 return (T)(object)typed;
             }
-            // EnumÀÇ °æ¿ì Ã³¸®
+            // Enumì˜ ê²½ìš° ì²˜ë¦¬
             if(typeof(T).BaseType == typeof(Enum))
             {
                 return (T)value;

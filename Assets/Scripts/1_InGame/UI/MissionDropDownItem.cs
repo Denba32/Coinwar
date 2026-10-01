@@ -22,11 +22,11 @@ namespace StockGame.Scripts.UI
         private MissionKind kind;
         private bool isCompleted;
 
-        // Job ¹Ì¼Ç ÁøÇà »óÅÂ Ä³½Ì (·ÎÄÉÀÏ º¯°æ ½Ã ÀçÁ¶ÇÕ¿ë)
+        // Job ë¯¸ì…˜ ì§„í–‰ ìƒíƒœ ìºì‹± (ë¡œì¼€ì¼ ë³€ê²½ ì‹œ ì¬ì¡°í•©ìš©)
         private JobMission currentJobMission;
         private int currentCount;
         private int requireCount;
-        private string zoneText; // ·ÎÄÃ¶óÀÌÁîµÈ Á¸ ÀÌ¸§ Ä³½Ì
+        private string zoneText; // ë¡œì»¬ë¼ì´ì¦ˆëœ ì¡´ ì´ë¦„ ìºì‹±
 
         public void Initialize(Mission mission, int index)
         {

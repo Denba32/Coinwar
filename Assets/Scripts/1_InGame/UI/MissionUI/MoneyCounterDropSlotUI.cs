@@ -27,7 +27,7 @@ namespace StockGame.Scripts.UI.Missions
 
         [SerializeField] private bool isRandomlyDrop = false;
         [Space]
-        [Header("·£´ı ½Ã ¹üÀ§")]
+        [Header("ëœë¤ ì‹œ ë²”ìœ„")]
         [SerializeField] private float randomRange = 0f;
 
         public IObservable<Unit> OnSuccess => onSuccess;

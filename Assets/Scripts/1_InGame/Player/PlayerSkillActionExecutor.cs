@@ -213,7 +213,7 @@ public class PlayerSkillActionExecutor : MonoBehaviour
     }
 
     /// <summary>
-    /// ȿ���� ���� �� ��Ÿ���� �߻���Ű�� ���� ��Ÿ�� ���� ����
+    /// 쿨타임 진행을 일시 정지한다 (효과가 지속되는 동안 쿨타임이 흐르지 않도록)
     /// </summary>
     public void FreezeCooltime()
     {
@@ -222,7 +222,7 @@ public class PlayerSkillActionExecutor : MonoBehaviour
     }
 
     /// <summary>
-    /// FreezeCooltime ���¸� �����ϰ� ��Ÿ���� ���� ����
+    /// FreezeCooltime 상태를 해제하고 쿨타임 진행을 재개한다
     /// </summary>
     public void UnfreezeCooltime()
     {

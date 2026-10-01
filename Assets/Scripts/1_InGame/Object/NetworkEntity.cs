@@ -9,13 +9,13 @@ public class NetworkEntity : NetworkBehaviour, IDisposable
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-        Debug.Log($"{OwnerClientId}���� {name} ������Ʈ�� ������ �߽��ϴ�");
+        Debug.Log($"[NetworkEntity] {name} spawned (OwnerClientId: {OwnerClientId})");
     }
 
     public override void OnNetworkDespawn()
     {
         base.OnNetworkDespawn();
-        Debug.Log($"{OwnerClientId}���� {name} ������Ʈ�� ���� �߽��ϴ�");
+        Debug.Log($"[NetworkEntity] {name} despawned (OwnerClientId: {OwnerClientId})");
     }
 
     public void Dispose()

@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class TeleportTriger : MonoBehaviour
 {
-    [Header("ÀÌµ¿ÇÒ ¸ñÇ¥ À§Ä¡")]
+    [Header("ì´ë™í•  ëª©í‘œ ìœ„ì¹˜")]
     public Transform targetPosition;
 
-    [Header("ÇÃ·¹ÀÌ¾î ÅÂ±× ÀÌ¸§ (±âº»°ª: Player)")]
+    [Header("í”Œë ˆì´ì–´ íƒœê·¸ ì´ë¦„ (ê¸°ë³¸ê°’: Player)")]
     public string playerTag = "Player";
 
     private void OnTriggerEnter2D(Collider2D other)
